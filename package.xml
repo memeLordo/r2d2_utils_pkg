@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>r2d2_utils_pkg</name>
+  <version>0.0.0</version>
+  <description>The r2d2_utils_pkg package</description>
+
+  <maintainer email="s.kripachev@rtc.ru">memeLordo</maintainer>
+
+  <!-- One license tag required, multiple allowed, one license per tag -->
+  <!-- Commonly used license strings: -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <license>TODO</license>
+
+  <author email="s.kripachev@rtc.ru">memeLordo</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_export_depend>roscpp</build_export_depend>
+  <exec_depend>roscpp</exec_depend>
+
+</package>
