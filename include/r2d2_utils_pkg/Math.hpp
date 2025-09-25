@@ -15,6 +15,10 @@ constexpr T max(const T a, const T b) {
   return std::max(a, b);
 };
 template <typename T>
+constexpr T abs(const T a) {
+  return std::abs(a);
+};
+template <typename T>
 constexpr T deg2rad(const T a) {
   return a * M_PI / 180.0;
 };
