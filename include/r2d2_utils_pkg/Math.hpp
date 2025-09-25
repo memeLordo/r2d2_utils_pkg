@@ -45,11 +45,11 @@ class Wrapper {
  public:
   template <typename T>
   static constexpr T wrap(const T a) {
-    return a / getRatio();
+    return a / getRatio<T>();
   };
   template <typename T>
   static constexpr T unwrap(const T a) {
-    return a * getRatio();
+    return a * getRatio<T>();
   };
   template <typename T, typename T2>
   static constexpr T wrap(const T2 a) {
