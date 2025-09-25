@@ -3,9 +3,9 @@ project(r2d2_utils_pkg)
 
 add_compile_options(-std=c++14)
 
-# find_package(catkin REQUIRED COMPONENTS
-#   roscpp
-# )
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+)
 
 catkin_package(
   CATKIN_DEPENDS roscpp

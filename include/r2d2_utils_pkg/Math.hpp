@@ -33,23 +33,36 @@ constexpr int8_t sign(const T a) {
 }  // namespace r2d2_math
 
 namespace r2d2_process {
-constexpr double K{-100};
+template <class Derived>
+class Wrapper {
+ protected:
+  static constexpr double getRatio() { return Derived::s_convertRatio; }
 
-template <typename T>
-constexpr T wrap(const T a) {
-  return a / K;
+ public:
+  template <typename T>
+  static constexpr T wrap(const T a) {
+    return a / getRatio();
+  };
+  template <typename T>
+  static constexpr T unwrap(const T a) {
+    return a * getRatio();
+  };
+  template <typename T, typename T2>
+  static constexpr T wrap(const T2 a) {
+    return static_cast<T>(a / getRatio());
+  };
+  template <typename T, typename T2>
+  static constexpr T unwrap(const T2 a) {
+    return static_cast<T>(a * getRatio());
+  };
 };
-template <typename T>
-constexpr T unwrap(const T a) {
-  return a * K;
+class Angle : public Wrapper<Angle> {
+  friend class Wrapper<Angle>;
+  static const double s_convertRatio;
 };
-template <typename T, typename T2>
-constexpr T wrap(const T2 a) {
-  return static_cast<T>(a / K);
-};
-template <typename T, typename T2>
-constexpr T unwrap(const T2 a) {
-  return static_cast<T>(a * K);
+class Force : public Wrapper<Force> {
+  friend class Wrapper<Force>;
+  static const double s_convertRatio;
 };
 }  // namespace r2d2_process
 
