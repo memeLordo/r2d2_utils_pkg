@@ -101,8 +101,8 @@ struct jointbase_t {
 namespace callback {
 template <typename T>
 using pipe_t = pipebase_t<T, uint16_t, uint8_t>;
-template <typename T, typename T1 = r2d2_commands::ControlType>
-using joint_t = jointbase_t<T, T1>;
+template <typename T>
+using joint_t = jointbase_t<T, r2d2_commands::ControlType>;
 
 typedef payloadbase_t<int16_t> payload16_t;
 typedef jointbase_t<int16_t, uint16_t> joint16_t;
