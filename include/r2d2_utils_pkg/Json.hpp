@@ -5,16 +5,16 @@
 #include <nlohmann/json.hpp>
 
 namespace r2d2_json {
-inline std::string getFilePath(const std::string& fileName);
+std::string getFilePath(const std::string& fileName);
 }  // namespace r2d2_json
 
 template <typename T = double>
-class IConfigJson {
+class IJsonConfig {
  protected:
   nlohmann::json m_json;
 
  public:
-  IConfigJson(const std::string& fileName) {
+  IJsonConfig(const std::string& fileName) {
     std::ifstream file(r2d2_json::getFilePath(fileName));
     if (!file)
       throw std::runtime_error("File \"" + fileName + ".json\" not found!");
@@ -31,12 +31,12 @@ class IConfigJson {
 };
 
 template <template <typename> class Type, typename T = double>
-class IConfigJsonMap : protected IConfigJson<T> {
+class IJsonConfigMap : protected IJsonConfig<T> {
  private:
   std::unordered_map<std::string, Type<T>> m_paramsMap;
 
  public:
-  IConfigJsonMap(const std::string& fileName);
+  IJsonConfigMap(const std::string& fileName);
 
  public:
   Type<T> getParams(const std::string& key) const {

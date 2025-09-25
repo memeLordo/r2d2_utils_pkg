@@ -36,24 +36,28 @@ namespace r2d2_process {
 template <class Derived>
 class Wrapper {
  protected:
-  static constexpr double getRatio() { return Derived::s_convertRatio; }
+  template <typename T = double>
+  static constexpr T getRatio() {
+    assert(Derived::s_convertRatio != 0);
+    return static_cast<T>(Derived::s_convertRatio);
+  };
 
  public:
   template <typename T>
   static constexpr T wrap(const T a) {
-    return a / getRatio();
+    return a * getRatio<T>();
   };
   template <typename T>
   static constexpr T unwrap(const T a) {
-    return a * getRatio();
+    return a / getRatio<T>();
   };
   template <typename T, typename T2>
   static constexpr T wrap(const T2 a) {
-    return static_cast<T>(a / getRatio());
+    return static_cast<T>(a * getRatio());
   };
   template <typename T, typename T2>
   static constexpr T unwrap(const T2 a) {
-    return static_cast<T>(a * getRatio());
+    return static_cast<T>(a / getRatio());
   };
 };
 class Angle : public Wrapper<Angle> {
