@@ -8,11 +8,15 @@
 namespace r2d2_math {
 template <typename T>
 constexpr T min(const T a, const T b) {
-  return std::min<T>(a, b);
+  return std::min(a, b);
 };
 template <typename T>
 constexpr T max(const T a, const T b) {
-  return std::max<T>(a, b);
+  return std::max(a, b);
+};
+template <typename T>
+constexpr T abs(const T a) {
+  return std::abs(a);
 };
 template <typename T>
 constexpr T deg2rad(const T a) {
@@ -44,20 +48,20 @@ class Wrapper {
 
  public:
   template <typename T>
-  static constexpr T wrap(const T a) {
-    return a * getRatio<T>();
+  static constexpr T wrap(const T value) {
+    return value / getRatio<T>();
   };
   template <typename T>
-  static constexpr T unwrap(const T a) {
-    return a / getRatio<T>();
+  static constexpr T unwrap(const T rawValue) {
+    return rawValue * getRatio<T>();
   };
   template <typename T, typename T2>
-  static constexpr T wrap(const T2 a) {
-    return static_cast<T>(a * getRatio());
+  static constexpr T wrap(const T2 value) {
+    return static_cast<T>(value / getRatio());
   };
   template <typename T, typename T2>
-  static constexpr T unwrap(const T2 a) {
-    return static_cast<T>(a / getRatio());
+  static constexpr T unwrap(const T2 rawValue) {
+    return static_cast<T>(rawValue * getRatio());
   };
 };
 class Angle : public Wrapper<Angle> {
