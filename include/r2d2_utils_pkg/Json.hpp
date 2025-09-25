@@ -31,7 +31,7 @@ class IJsonConfig {
 };
 
 template <template <typename> class Type, typename T = double>
-class IJsonConfigMap : protected IJsonConfig<T> {
+class IJsonConfigMap : public IJsonConfig<T> {
  private:
   std::unordered_map<std::string, Type<T>> m_paramsMap;
 
