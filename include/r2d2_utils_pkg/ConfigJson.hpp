@@ -13,7 +13,7 @@ class IConfigJson {
  protected:
   nlohmann::json m_json;
 
- protected:
+ public:
   IConfigJson(const std::string& fileName) {
     std::ifstream file(r2d2_json::getFilePath(fileName));
     if (!file)
@@ -21,7 +21,7 @@ class IConfigJson {
     file >> m_json;
   };
 
- protected:
+ public:
   template <typename U = T>
   U getParam(const std::string& key) const {
     if (!m_json.contains(key))
@@ -35,10 +35,10 @@ class IConfigJsonMap : protected IConfigJson<T> {
  private:
   std::unordered_map<std::string, Type<T>> m_paramsMap;
 
- protected:
+ public:
   IConfigJsonMap(const std::string& fileName);
 
- protected:
+ public:
   Type<T> getParams(const std::string& key) const {
     auto it{m_paramsMap.find(key)};
     if (it == m_paramsMap.end())
