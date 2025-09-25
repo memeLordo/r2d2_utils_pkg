@@ -56,6 +56,14 @@ class Wrapper {
     return static_cast<T>(a * getRatio());
   };
 };
+class Angle : public Wrapper<Angle> {
+  friend class Wrapper<Angle>;
+  static const double s_convertRatio;
+};
+class Force : public Wrapper<Force> {
+  friend class Wrapper<Force>;
+  static const double s_convertRatio;
+};
 }  // namespace r2d2_process
 
 #endif  // R2D2_MATH_HPP
