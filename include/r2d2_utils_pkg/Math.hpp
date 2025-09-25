@@ -41,19 +41,19 @@ class Wrapper {
  public:
   template <typename T>
   static constexpr T wrap(const T a) {
-    return a / getRatio();
+    return a * getRatio();
   };
   template <typename T>
   static constexpr T unwrap(const T a) {
-    return a * getRatio();
+    return a / getRatio();
   };
   template <typename T, typename T2>
   static constexpr T wrap(const T2 a) {
-    return static_cast<T>(a / getRatio());
+    return static_cast<T>(a * getRatio());
   };
   template <typename T, typename T2>
   static constexpr T unwrap(const T2 a) {
-    return static_cast<T>(a * getRatio());
+    return static_cast<T>(a / getRatio());
   };
 };
 class Angle : public Wrapper<Angle> {
