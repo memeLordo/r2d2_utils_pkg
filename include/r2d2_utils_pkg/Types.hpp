@@ -31,9 +31,9 @@ struct EnumPair {
   };
   void updateKey();
 };
-using NozzleTypePair = EnumPair<NozzleType>;
-using WorkModePair = EnumPair<WorkMode>;
-using LockStatusPair = EnumPair<LockStatus>;
+typedef EnumPair<NozzleType> NozzleTypePair;
+typedef EnumPair<WorkMode> WorkModePair;
+typedef EnumPair<LockStatus> LockStatusPair;
 
 template <>
 inline void WorkModePair::updateKey() {
