@@ -100,8 +100,6 @@ struct jointbase_t {
 namespace callback {
 template <typename T>
 using pipe_t = pipebase_t<T, uint16_t, uint8_t>;
-template <typename T>
-using manipulator16_t = manipulatorbase_t<T, int16_t>;
 template <typename T, typename T1 = r2d2_commands::ControlType>
 using joint_t = jointbase_t<T, T1>;
 
@@ -119,7 +117,7 @@ struct joint_t {
   std::vector<T> coeffs{};
 };
 template <typename T>
-using manipulator_t = callback::manipulator16_t<T>;
+using manipulator_t = manipulatorbase_t<T, int16_t>;
 }  // namespace config
 
 }  // namespace r2d2_type
