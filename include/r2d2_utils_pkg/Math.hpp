@@ -38,6 +38,7 @@ class Wrapper {
  protected:
   template <typename T = double>
   static constexpr T getRatio() {
+    assert(Derived::s_convertRatio != 0);
     return static_cast<T>(Derived::s_convertRatio);
   };
 
