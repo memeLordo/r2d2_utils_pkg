@@ -8,11 +8,11 @@
 namespace r2d2_math {
 template <typename T>
 constexpr T min(const T a, const T b) {
-  return std::min<T>(a, b);
+  return std::min(a, b);
 };
 template <typename T>
 constexpr T max(const T a, const T b) {
-  return std::max<T>(a, b);
+  return std::max(a, b);
 };
 template <typename T>
 constexpr T deg2rad(const T a) {
