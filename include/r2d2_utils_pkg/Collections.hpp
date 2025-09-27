@@ -36,6 +36,8 @@ class NamedHandlerCollection {
   };
 
  private:
+  template <typename Node>
+  void initializeCollection(Node*) {};
   template <typename Node, typename First, typename... Rest>
   void initializeCollection(Node* node, First&& first, Rest&&... rest) {
     static_assert(std::is_convertible<First, std::string>::value,
