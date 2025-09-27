@@ -65,11 +65,9 @@ class NamedHandlerCollection {
 
  public:
   size_t size() const { return m_objectVector.size(); };
-  typename std::vector<Type<T>>::iterator begin() {
-    return m_objectVector.begin();
-  };
-  typename std::vector<Type<T>>::iterator end() {
-    return m_objectVector.end();
-  };
+  auto begin() { return m_objectVector.begin(); };
+  auto end() { return m_objectVector.end(); };
+  auto cbegin() const { return m_objectVector.cbegin(); };
+  auto cend() const { return m_objectVector.cend(); };
 };
 #endif  // R2D2_COLLECTIONS_HPP
