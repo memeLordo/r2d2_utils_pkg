@@ -2,6 +2,7 @@
 #define R2D2_MATH_HPP
 
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <cstdint>
 
@@ -23,8 +24,8 @@ constexpr T deg2rad(const T a) {
   return a * M_PI / 180.0;
 };
 template <typename T>
-constexpr T sin(const T thetha) {
-  return std::sin(deg2rad(thetha));
+constexpr T sin(const T theta) {
+  return std::sin(deg2rad(theta));
 };
 template <typename T>
 constexpr T sqr(const T a) {
@@ -32,7 +33,8 @@ constexpr T sqr(const T a) {
 };
 template <typename T>
 constexpr int8_t sign(const T a) {
-  return a ? a > 0 ? 1 : -1 : 0;
+  static_assert(std::is_arithmetic_v<T>, "T must be an arithmetic type");
+  return (a > T{0}) - (a < T{0});
 };
 }  // namespace r2d2_math
 
