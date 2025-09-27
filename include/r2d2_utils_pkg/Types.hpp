@@ -102,6 +102,8 @@ namespace callback {
 template <typename T>
 using pipe_t = pipebase_t<T, uint16_t, uint8_t>;
 template <typename T>
+using payload_t = payloadbase_t<T>;
+template <typename T>
 using joint_t = jointbase_t<T, r2d2_commands::ControlType>;
 
 typedef payloadbase_t<int16_t> payload16_t;
