@@ -50,15 +50,18 @@ class NamedHandlerCollection {
   };
 
  public:
-  template <typename Ret, typename... Args>
-  if_void_t<Ret> call_each(Ret (Type<T>::*func)(Args...), Args... args) {
+  template <typename Func, typename... Args>
+  void call_each(Func func, Args&&... args) {
     for (auto& obj_ : m_objectVector) {
       (obj_.*func)(std::forward<Args>(args)...);
     }
   };
-  template <typename Ret, typename... Args>
-  if_typed_t<Ret> call_each(Ret (Type<T>::*func)(Args...), Args... args) const {
-    std::vector<Ret> results_;
+  template <typename Func, typename... Args>
+  auto call_each(Func func, Args&&... args) {
+    using RetType =
+        decltype((std::declval<Type<T>&>().*func)(std::declval<Args>()...));
+
+    std::vector<RetType> results_;
     results_.reserve(m_objectVector.size());
     for (auto& obj : m_objectVector) {
       results_.emplace_back((obj.*func)(std::forward<Args>(args)...));
