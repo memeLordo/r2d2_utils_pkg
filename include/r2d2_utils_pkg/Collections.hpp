@@ -43,20 +43,19 @@ class NamedHandlerCollection {
 
   template <typename Ret>
   using if_void_t = typename std::enable_if<std::is_void<Ret>::value>::type;
-
   template <typename Ret>
-  using typed_t = typename std::enable_if<!std::is_void<Ret>::value,
-                                          std::vector<Ret>>::type;
+  using if_typed_t = typename std::enable_if<!std::is_void<Ret>::value,
+                                             std::vector<Ret>>::type;
 
  public:
   template <typename Ret, typename... Args>
-  void call_each(Ret (Type<T>::*func)(Args...) const, Args... args) const {
+  if_void_t<Ret> call_each(Ret (Type<T>::*func)(Args...), Args... args) {
     for (const auto& obj_ : m_objectVector) {
       (obj_.*func)(args...);
     }
   };
   template <typename Ret, typename... Args>
-  std::vector<Ret> call_each(Ret (Type<T>::*func)(Args...), Args... args) {
+  if_typed_t<Ret> call_each(Ret (Type<T>::*func)(Args...), Args... args) const {
     std::vector<Ret> results_;
     results_.reserve(m_objectVector.size());
     for (auto& obj : m_objectVector) {
