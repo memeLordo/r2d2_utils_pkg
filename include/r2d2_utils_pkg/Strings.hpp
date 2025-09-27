@@ -4,44 +4,57 @@
 #include <algorithm>
 #include <cassert>
 #include <string>
+#include <string_view>
 
 namespace r2d2_string {
-inline std::string lower(std::string str) {
+[[nodiscard]]
+inline std::string lower(std::string_view sv) {
+  std::string str(sv);
   std::transform(str.begin(), str.end(), str.begin(), ::tolower);
   return str;
 };
-inline std::string lower(std::string str, size_t from) {
-  assert(from >= 0 && from <= str.length());
-  auto begin_{str.begin() + from};
-  auto end_{str.end()};
+[[nodiscard]]
+inline std::string lower(std::string_view sv, size_t from) {
+  assert(from <= sv.length());
+  std::string str(sv);
+  auto begin_ = str.begin() + from;
+  auto end_ = str.end();
   std::transform(begin_, end_, begin_, ::tolower);
   return str;
 };
-inline std::string lower(std::string str, size_t from, size_t to) {
-  assert(from >= 0 && from <= str.length());
-  assert(to >= from && to <= str.length());
-  auto begin_{str.begin() + from};
-  auto end_{str.begin() + to};
+[[nodiscard]]
+inline std::string lower(std::string_view sv, size_t from, size_t to) {
+  assert(from <= sv.length());
+  assert(to >= from && to <= sv.length());
+  std::string str(sv);
+  auto begin_ = str.begin() + from;
+  auto end_ = str.begin() + to;
   std::transform(begin_, end_, begin_, ::tolower);
   return str;
 };
 
-inline std::string upper(std::string str) {
+[[nodiscard]]
+inline std::string upper(std::string_view sv) {
+  std::string str(sv);
   std::transform(str.begin(), str.end(), str.begin(), ::toupper);
   return str;
 };
-inline std::string upper(std::string str, size_t from) {
-  assert(from >= 0 && from <= str.length());
-  auto begin_{str.begin() + from};
-  auto end_{str.end()};
+[[nodiscard]]
+inline std::string upper(std::string_view sv, size_t from) {
+  assert(from <= sv.length());
+  std::string str(sv);
+  auto begin_ = str.begin() + from;
+  auto end_ = str.end();
   std::transform(begin_, end_, begin_, ::toupper);
   return str;
 };
-inline std::string upper(std::string str, size_t from, size_t to) {
-  assert(from >= 0 && from <= str.length());
-  assert(to >= from && to <= str.length());
-  auto begin_{str.begin() + from};
-  auto end_{str.begin() + to};
+[[nodiscard]]
+inline std::string upper(std::string_view sv, size_t from, size_t to) {
+  assert(from <= sv.length());
+  assert(to >= from && to <= sv.length());
+  std::string str(sv);
+  auto begin_ = str.begin() + from;
+  auto end_ = str.begin() + to;
   std::transform(begin_, end_, begin_, ::toupper);
   return str;
 };
