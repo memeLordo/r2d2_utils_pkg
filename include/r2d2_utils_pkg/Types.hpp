@@ -79,7 +79,9 @@ template <typename T, typename T1, typename T2>
 struct pipebase_t {
   T1 diameter{};
   T2 thickness{};
-  T radius() const { return (T)diameter / T{2} - (T)thickness; };
+  [[nodiscard]] constexpr T radius() const {
+    return static_cast<T>(diameter) / T{2} - static_cast<T>(thickness);
+  };
 };
 template <typename T1>
 struct payloadbase_t {
@@ -112,8 +114,6 @@ typedef jointbase_t<int16_t, uint16_t> joint16_t;
 
 namespace config {
 template <typename T>
-using pipe_t = pipebase_t<T, uint16_t, uint8_t>;
-template <typename T>
 struct payload_t {
   T stiffness{1};
 };
@@ -125,6 +125,8 @@ struct joint_t {
   T angle_tolerance{};
   std::vector<T> coeffs{};
 };
+template <typename T>
+using pipe_t = pipebase_t<T, uint16_t, uint8_t>;
 template <typename T>
 using manipulator_t = manipulatorbase_t<T, int16_t>;
 }  // namespace config
