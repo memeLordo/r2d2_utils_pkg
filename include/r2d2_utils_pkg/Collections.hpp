@@ -51,7 +51,7 @@ class NamedHandlerCollection {
     }
   };
   template <typename Func, typename... Args>
-  auto call_each(Func func, Args&&... args) {
+  auto get_each(Func func, Args&&... args) {
     using RetType =
         decltype((std::declval<Type<T>&>().*func)(std::declval<Args>()...));
 
