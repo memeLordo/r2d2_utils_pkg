@@ -41,6 +41,13 @@ class NamedHandlerCollection {
       initializeCollection(node, std::forward<Rest>(rest)...);
   };
 
+  template <typename Ret>
+  using if_void_t = typename std::enable_if<std::is_void<Ret>::value>::type;
+
+  template <typename Ret>
+  using typed_t = typename std::enable_if<!std::is_void<Ret>::value,
+                                          std::vector<Ret>>::type;
+
  public:
   template <typename Ret, typename... Args>
   void call_each(Ret (Type<T>::*func)(Args...) const, Args... args) const {
