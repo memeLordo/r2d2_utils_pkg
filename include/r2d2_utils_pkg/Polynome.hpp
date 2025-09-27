@@ -1,16 +1,18 @@
 #ifndef R2D2_POLYNOME_HPP
 #define R2D2_POLYNOME_HPP
 
-#include <vector>
+#include <type_traits>
 
 namespace horner {
-template <typename T>
-constexpr T polynome(const std::vector<T>& coeffs, const T x) {
+template <template <typename> class Container, typename T>
+[[nodiscard]] constexpr T polynome(const Container<T>& coeffs, const T x) {
+  static_assert(std::is_arithmetic_v<T>, "T must be an arithmetic type");
   if (coeffs.empty()) return T{};
 
-  T result_{coeffs[0]};
-  for (size_t i = 1; i < coeffs.size(); ++i) result_ = result_ * x + coeffs[i];
+  auto it{coeffs.begin()};
+  T result_{*it++};
+  for (; it != coeffs.end(); ++it) result_ = result_ * x + *it;
   return result_;
 };
 }  // namespace horner
-#endif  // R2D2_POLYNOME_H
+#endif  // R2D2_POLYNOME_HPP
