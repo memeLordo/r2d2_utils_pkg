@@ -13,13 +13,12 @@ inline std::string transform_string(std::string_view sv, TransformFunc func,
                                     size_t from = 0,
                                     size_t to = std::string_view::npos) {
   if (to == std::string_view::npos) to = sv.length();
-
   assert(from <= sv.length());
   assert(to >= from && to <= sv.length());
 
-  std::string str(sv);
-  auto begin_ = str.begin() + from;
-  auto end_ = str.begin() + to;
+  std::string str{sv};
+  auto begin_{str.begin() + from};
+  auto end_{str.begin() + to};
   std::transform(begin_, end_, begin_, func);
   return str;
 };
