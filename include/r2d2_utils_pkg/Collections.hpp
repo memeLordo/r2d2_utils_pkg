@@ -20,7 +20,7 @@ class NamedNodeHandlerCollection {
     static_assert(size_ > 0, "At least one joint name must be provided!");
     m_objectVector.reserve(size_);
     m_indexMap.reserve(size_);
-    initializeJoints(node, std::forward<Args>(names)...);
+    initializeCollection(node, std::forward<Args>(names)...);
   };
   Type<T>& operator()(const std::string& name) const {
     auto it{m_indexMap.find(name)};
@@ -38,7 +38,7 @@ class NamedNodeHandlerCollection {
     m_objectVector.emplace_back(Type<T>(node, name_));
     m_indexMap.emplace(name_, m_objectVector.size() - 1);
     if (sizeof...(rest) > 0)
-      initializeJoints(node, std::forward<Rest>(rest)...);
+      initializeCollection(node, std::forward<Rest>(rest)...);
   };
 
  public:
