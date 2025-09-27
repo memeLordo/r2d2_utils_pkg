@@ -9,6 +9,12 @@
 
 template <template <typename> class Type, typename T>
 class NamedHandlerCollection {
+  template <typename Ret>
+  using if_void_t = typename std::enable_if<std::is_void<Ret>::value>::type;
+  template <typename Ret>
+  using if_typed_t = typename std::enable_if<!std::is_void<Ret>::value,
+                                             std::vector<Ret>>::type;
+
  protected:
   std::vector<Type<T>> m_objectVector;
   std::unordered_map<std::string, size_t> m_indexMap;
@@ -40,12 +46,6 @@ class NamedHandlerCollection {
     if (sizeof...(rest) > 0)
       initializeCollection(node, std::forward<Rest>(rest)...);
   };
-
-  template <typename Ret>
-  using if_void_t = typename std::enable_if<std::is_void<Ret>::value>::type;
-  template <typename Ret>
-  using if_typed_t = typename std::enable_if<!std::is_void<Ret>::value,
-                                             std::vector<Ret>>::type;
 
  public:
   template <typename Ret, typename... Args>
