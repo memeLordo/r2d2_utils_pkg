@@ -53,7 +53,7 @@ class NamedHandlerCollection {
   template <typename Ret, typename... Args>
   if_void_t<Ret> call_each(Ret (Type<T>::*func)(Args...), Args... args) {
     for (auto& obj_ : m_objectVector) {
-      (obj_.*func)(args...);
+      (obj_.*func)(std::forward<Args>(args)...);
     }
   };
   template <typename Ret, typename... Args>
@@ -61,7 +61,7 @@ class NamedHandlerCollection {
     std::vector<Ret> results_;
     results_.reserve(m_objectVector.size());
     for (auto& obj : m_objectVector) {
-      results_.emplace_back(obj.*func(args...));
+      results_.emplace_back((obj.*func)(std::forward<Args>(args)...));
     }
     return results_;
   };
