@@ -4,6 +4,7 @@
 #include <cassert>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <unordered_map>
 #include <vector>
 
@@ -12,6 +13,11 @@ class NamedHandlerCollection {
  protected:
   std::vector<Type<T>> m_objectVector;
   std::unordered_map<std::string, size_t> m_indexMap;
+
+  template <typename Func, typename... Args>
+  using InvokeResultType = std::invoke_result_t<
+      Func, typename std::remove_reference_t<decltype(m_objectVector.front())>&,
+      Args...>;
 
  public:
   template <typename Node, typename... Args>
