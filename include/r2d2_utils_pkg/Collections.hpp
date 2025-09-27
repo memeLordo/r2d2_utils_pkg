@@ -8,14 +8,14 @@
 #include <vector>
 
 template <template <typename> class Type, typename T>
-class NamedNodeHandlerCollection {
- private:
+class NamedHandlerCollection {
+ protected:
   std::vector<Type<T>> m_objectVector;
   std::unordered_map<std::string, size_t> m_indexMap;
 
  public:
   template <typename Node, typename... Args>
-  NamedNodeHandlerCollection(Node* node, Args&&... names) {
+  NamedHandlerCollection(Node* node, Args&&... names) {
     const size_t size_{sizeof...(names)};
     static_assert(size_ > 0, "At least one joint name must be provided!");
     m_objectVector.reserve(size_);
@@ -50,5 +50,4 @@ class NamedNodeHandlerCollection {
     return m_objectVector.end();
   };
 };
-
 #endif  // R2D2_COLLECTIONS_HPP
