@@ -22,56 +22,16 @@ inline std::string transform_string(std::string_view sv, TransformFunc func,
   std::transform(begin_, end_, begin_, func);
   return str;
 };
-[[nodiscard]]
-inline std::string lower(std::string_view sv) {
-  std::string str(sv);
-  std::transform(str.begin(), str.end(), str.begin(), ::tolower);
-  return str;
-};
-[[nodiscard]]
-inline std::string lower(std::string_view sv, size_t from) {
-  assert(from <= sv.length());
-  std::string str(sv);
-  auto begin_ = str.begin() + from;
-  auto end_ = str.end();
-  std::transform(begin_, end_, begin_, ::tolower);
-  return str;
-};
-[[nodiscard]]
-inline std::string lower(std::string_view sv, size_t from, size_t to) {
-  assert(from <= sv.length());
-  assert(to >= from && to <= sv.length());
-  std::string str(sv);
-  auto begin_ = str.begin() + from;
-  auto end_ = str.begin() + to;
-  std::transform(begin_, end_, begin_, ::tolower);
-  return str;
-};
 
 [[nodiscard]]
-inline std::string upper(std::string_view sv) {
-  std::string str(sv);
-  std::transform(str.begin(), str.end(), str.begin(), ::toupper);
-  return str;
+inline std::string upper(std::string_view sv, size_t from = 0,
+                         size_t to = std::string_view::npos) {
+  return transform_string(sv, ::toupper, from, to);
 };
 [[nodiscard]]
-inline std::string upper(std::string_view sv, size_t from) {
-  assert(from <= sv.length());
-  std::string str(sv);
-  auto begin_ = str.begin() + from;
-  auto end_ = str.end();
-  std::transform(begin_, end_, begin_, ::toupper);
-  return str;
-};
-[[nodiscard]]
-inline std::string upper(std::string_view sv, size_t from, size_t to) {
-  assert(from <= sv.length());
-  assert(to >= from && to <= sv.length());
-  std::string str(sv);
-  auto begin_ = str.begin() + from;
-  auto end_ = str.begin() + to;
-  std::transform(begin_, end_, begin_, ::toupper);
-  return str;
+inline std::string lower(std::string_view sv, size_t from = 0,
+                         size_t to = std::string_view::npos) {
+  return transform_string(sv, ::tolower, from, to);
 };
 }  // namespace r2d2_string
 
