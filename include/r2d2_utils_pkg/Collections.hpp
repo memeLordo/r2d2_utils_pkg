@@ -56,15 +56,12 @@ class NamedHandlerCollection {
     }
   };
   template <typename Func, typename... Args>
-  auto get_each(Func func, Args&&... args) {
-    using RetType =
-        decltype((std::declval<Type<T>&>().*func)(std::declval<Args>()...));
-
-    std::vector<RetType> results_;
+  auto get_each(Func func, Args&&... args) const
+      -> std::vector<InvokeResultType<Func, Args...>> {
+    std::vector<InvokeResultType<Func, Args...>> results_;
     results_.reserve(m_objectVector.size());
-    for (auto& obj : m_objectVector) {
+    for (auto& obj : m_objectVector)
       results_.emplace_back((obj.*func)(std::forward<Args>(args)...));
-    }
     return results_;
   };
 
