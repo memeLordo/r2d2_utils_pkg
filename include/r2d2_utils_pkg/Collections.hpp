@@ -10,14 +10,13 @@
 
 template <template <typename> class Type, typename T>
 class NamedHandlerCollection {
+ private:
+  template <typename Func, typename... Args>
+  using InvokeResultType = std::invoke_result_t<Func, Type<T>&, Args...>;
+
  protected:
   std::vector<Type<T>> m_objectVector;
   std::unordered_map<std::string, size_t> m_indexMap;
-
-  template <typename Func, typename... Args>
-  using InvokeResultType = std::invoke_result_t<
-      Func, typename std::remove_reference_t<decltype(m_objectVector.front())>&,
-      Args...>;
 
  public:
   template <typename Node, typename... Args>
