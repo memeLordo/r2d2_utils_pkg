@@ -126,9 +126,15 @@ struct joint_t {
   std::vector<T> coeffs{};
 };
 template <typename T>
-using pipe_t = pipebase_t<T, uint16_t, uint8_t>;
+struct pipe_t {
+  T diameter{};
+  T thickness{};
+  [[nodiscard]] constexpr T radius() const {
+    return diameter / T{2} - thickness;
+  };
+};
 template <typename T>
-using manipulator_t = manipulatorbase_t<T, int16_t>;
+using manipulator_t = manipulatorbase_t<T, T>;
 }  // namespace config
 
 }  // namespace r2d2_type
