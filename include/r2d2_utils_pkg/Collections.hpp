@@ -1,6 +1,7 @@
 #ifndef R2D2_COLLECTIONS_HPP
 #define R2D2_COLLECTIONS_HPP
 
+#include <algorithm>
 #include <cassert>
 #include <stdexcept>
 #include <string>
@@ -49,17 +50,16 @@ class NamedHandlerCollection {
  public:
   template <typename Func, typename... Args>
   void call_each(Func func, Args&&... args) {
-    for (auto& obj : m_objectVector) {
-      (obj.*func)(std::forward<Args>(args)...);
-    }
+    std::for_each(cbegin(), cend(),
+                  [&](auto& obj) { (obj.*func)(std::forward<Args>(args)...); });
   };
   template <typename Func, typename... Args>
   auto get_each(Func func, Args&&... args) const
       -> std::vector<InvokeResultType<Func, Args...>> {
-    std::vector<InvokeResultType<Func, Args...>> results_;
-    results_.reserve(m_objectVector.size());
-    for (auto& obj : m_objectVector)
-      results_.emplace_back((obj.*func)(std::forward<Args>(args)...));
+    std::vector<InvokeResultType<Func, Args...>> results_{size()};
+    std::transform(cbegin(), cend(), results_.begin(), [&](auto& obj) {
+      return (obj.*func)(std::forward<Args>(args)...);
+    });
     return results_;
   };
 
