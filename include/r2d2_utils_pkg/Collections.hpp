@@ -1,6 +1,7 @@
 #ifndef R2D2_COLLECTIONS_HPP
 #define R2D2_COLLECTIONS_HPP
 
+#include <algorithm>
 #include <cassert>
 #include <stdexcept>
 #include <string>
@@ -10,14 +11,13 @@
 
 template <template <typename> class Type, typename T>
 class NamedHandlerCollection {
+ private:
+  template <typename Func, typename... Args>
+  using InvokeResultType = std::invoke_result_t<Func, Type<T>&, Args...>;
+
  protected:
   std::vector<Type<T>> m_objectVector;
   std::unordered_map<std::string, size_t> m_indexMap;
-
-  template <typename Func, typename... Args>
-  using InvokeResultType = std::invoke_result_t<
-      Func, typename std::remove_reference_t<decltype(m_objectVector.front())>&,
-      Args...>;
 
  public:
   template <typename Node, typename... Args>
@@ -26,7 +26,7 @@ class NamedHandlerCollection {
     static_assert(size_ > 0, "At least one name is required!");
     m_objectVector.reserve(size_);
     m_indexMap.reserve(size_);
-    initializeCollection(node, std::forward<Args>(names)...);
+    initializeCollection(node, names...);
   };
   Type<T>& operator()(const std::string& name) {
     if (auto it = m_indexMap.find(name); it != m_indexMap.end())
@@ -44,24 +44,22 @@ class NamedHandlerCollection {
     const std::string name_{std::forward<First>(first)};
     m_objectVector.emplace_back(Type<T>(node, name_));
     m_indexMap.emplace(name_, m_objectVector.size() - 1);
-    if constexpr (sizeof...(rest) > 0)
-      initializeCollection(node, std::forward<Rest>(rest)...);
+    if constexpr (sizeof...(rest) > 0) initializeCollection(node, rest...);
   };
 
  public:
   template <typename Func, typename... Args>
   void call_each(Func func, Args&&... args) {
-    for (auto& obj : m_objectVector) {
-      (obj.*func)(std::forward<Args>(args)...);
-    }
+    std::for_each(cbegin(), cend(),
+                  [&](auto& obj) { (obj.*func)(std::forward<Args>(args)...); });
   };
   template <typename Func, typename... Args>
   auto get_each(Func func, Args&&... args) const
       -> std::vector<InvokeResultType<Func, Args...>> {
-    std::vector<InvokeResultType<Func, Args...>> results_;
-    results_.reserve(m_objectVector.size());
-    for (auto& obj : m_objectVector)
-      results_.emplace_back((obj.*func)(std::forward<Args>(args)...));
+    std::vector<InvokeResultType<Func, Args...>> results_{size()};
+    std::transform(cbegin(), cend(), results_.begin(), [&](auto& obj) {
+      return (obj.*func)(std::forward<Args>(args)...);
+    });
     return results_;
   };
 
