@@ -29,10 +29,9 @@ class NamedHandlerCollection {
     initializeCollection(node, std::forward<Args>(names)...);
   };
   Type<T>& operator()(const std::string& name) {
-    auto it{m_indexMap.find(name)};
-    if (it == m_indexMap.end())
-      throw std::out_of_range("Joint name " + name + " not found!");
-    return m_objectVector[it->second];
+    if (auto it = m_indexMap.find(name); it != m_indexMap.end())
+      return m_objectVector[it->second];
+    throw std::out_of_range("Name \"" + name + "\" not found!");
   };
 
  private:
