@@ -22,8 +22,8 @@ class NamedHandlerCollection {
  public:
   template <typename Node, typename... Args>
   NamedHandlerCollection(Node* node, Args&&... names) {
-    const size_t size_{sizeof...(names)};
-    static_assert(size_ > 0, "At least one joint name must be provided!");
+    constexpr size_t size_{sizeof...(names)};
+    static_assert(size_ > 0, "At least one name is required!");
     m_objectVector.reserve(size_);
     m_indexMap.reserve(size_);
     initializeCollection(node, std::forward<Args>(names)...);
@@ -40,12 +40,12 @@ class NamedHandlerCollection {
   void initializeCollection(Node*) {};
   template <typename Node, typename First, typename... Rest>
   void initializeCollection(Node* node, First&& first, Rest&&... rest) {
-    static_assert(std::is_convertible<First, std::string>::value,
-                  "Joint names must be string type!");
+    static_assert(std::is_convertible_v<First, std::string>,
+                  "Name must be convertible to string!");
     const std::string name_{std::forward<First>(first)};
     m_objectVector.emplace_back(Type<T>(node, name_));
     m_indexMap.emplace(name_, m_objectVector.size() - 1);
-    if (sizeof...(rest) > 0)
+    if constexpr (sizeof...(rest) > 0)
       initializeCollection(node, std::forward<Rest>(rest)...);
   };
 
