@@ -3,9 +3,12 @@
 
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include <stdexcept>
+#include <string_view>
+#include <unordered_map>
 
 namespace r2d2_json {
-std::string getFilePath(const std::string& fileName);
+std::string getFilePath(std::string_view fileName);
 }  // namespace r2d2_json
 
 template <typename T = double>
@@ -14,36 +17,37 @@ class IJsonConfig {
   nlohmann::json m_json;
 
  public:
-  IJsonConfig(const std::string& fileName) {
-    std::ifstream file(r2d2_json::getFilePath(fileName));
+  IJsonConfig(std::string_view fileName) {
+    std::ifstream file{r2d2_json::getFilePath(fileName)};
     if (!file)
-      throw std::runtime_error("File \"" + fileName + ".json\" not found!");
+      throw std::runtime_error(
+          {"File \"" + std::string{fileName} + ".json\" not found!"});
     file >> m_json;
   };
 
  public:
   template <typename U = T>
-  U getParam(const std::string& key) const {
+  [[nodiscard]] U getParam(std::string_view key) const {
     if (!m_json.contains(key))
-      throw std::runtime_error("Parameter \"" + key + "\" not found!");
-    return m_json.at(key).get<U>();
-  };
+      throw std::runtime_error(
+          {"Parameter \"" + std::string{key} + "\" not found!"});
+    return m_json.at(std::string(key)).template get<U>();
+  }
 };
 
 template <template <typename> class Type, typename T = double>
 class IJsonConfigMap : public IJsonConfig<T> {
  private:
-  std::unordered_map<std::string, Type<T>> m_paramsMap;
+  std::unordered_map<std::string_view, Type<T>> m_paramsMap;
 
  public:
-  IJsonConfigMap(const std::string& fileName);
+  IJsonConfigMap(std::string_view fileName);
 
  public:
-  Type<T> getParams(const std::string& key) const {
-    auto it{m_paramsMap.find(key)};
-    if (it == m_paramsMap.end())
-      throw std::runtime_error("Object \"" + key + "\" not found!");
-    return it->second;
+  [[nodiscard]] Type<T> getParams(std::string_view key) const {
+    if (auto it = m_paramsMap.find(key); it != m_paramsMap.end())
+      return it->second;
+    throw std::runtime_error("Object \"" + std::string{key} + "\" not found!");
   };
 };
 #endif  // R2D2_CONFIG_JSON_HPP
