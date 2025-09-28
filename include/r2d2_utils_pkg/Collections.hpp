@@ -51,8 +51,8 @@ class NamedHandlerCollection {
  public:
   template <typename Func, typename... Args>
   void call_each(Func func, Args&&... args) {
-    for (auto& obj_ : m_objectVector) {
-      (obj_.*func)(std::forward<Args>(args)...);
+    for (auto& obj : m_objectVector) {
+      (obj.*func)(std::forward<Args>(args)...);
     }
   };
   template <typename Func, typename... Args>
