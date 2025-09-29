@@ -26,7 +26,7 @@ class NamedHandlerCollection {
     static_assert(size_ > 0, "At least one name is required!");
     m_objectVector.reserve(size_);
     m_indexMap.reserve(size_);
-    initializeCollection(node, names...);
+    initializeCollection(node, std::forward<Args>(names)...);
   };
   Type<T>& operator()(const std::string& name) {
     if (auto it = m_indexMap.find(name); it != m_indexMap.end())
@@ -44,7 +44,8 @@ class NamedHandlerCollection {
     const std::string name_{std::forward<First>(first)};
     m_objectVector.emplace_back(Type<T>(node, name_));
     m_indexMap.emplace(name_, m_objectVector.size() - 1);
-    if constexpr (sizeof...(rest) > 0) initializeCollection(node, rest...);
+    if constexpr (sizeof...(rest) > 0)
+      initializeCollection(node, std::forward<Rest>(rest)...);
   };
 
  public:
