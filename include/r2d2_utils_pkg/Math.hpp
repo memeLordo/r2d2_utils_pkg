@@ -49,20 +49,21 @@ namespace r2d2_process {
 template <class Derived>
 class Wrapper {
  protected:
-  template <typename T = double>
-  [[nodiscard]] static constexpr T getRatio() {
+  [[nodiscard]] static constexpr auto getRatio() {
+    static_assert(std::is_arithmetic_v<decltype(Derived::s_convertRatio)>,
+                  "s_convertRatio must be of an arithmetic type!");
     assert(Derived::s_convertRatio != 0);
-    return static_cast<T>(Derived::s_convertRatio);
+    return Derived::s_convertRatio;
   };
 
  public:
   template <typename T>
   [[nodiscard]] static constexpr T wrap(const T value) {
-    return value / getRatio<T>();
+    return static_cast<T>(value / getRatio());
   };
   template <typename T>
   [[nodiscard]] static constexpr T unwrap(const T rawValue) {
-    return rawValue * getRatio<T>();
+    return static_cast<T>(rawValue * getRatio());
   };
   template <typename T, typename T2>
   [[nodiscard]] static constexpr T wrap(const T2 value) {
