@@ -8,7 +8,7 @@
 namespace horner {
 template <template <typename> class Container, typename T>
 [[nodiscard]] constexpr T polynome(const Container<T>& coeffs, const T& x) {
-  static_assert(std::is_arithmetic_v<T>, "T must be an arithmetic type");
+  static_assert(std::is_arithmetic_v<T>, "T must be an arithmetic type!");
   if (coeffs.empty()) return T{};
   return std::accumulate(
       std::next(coeffs.cbegin()), coeffs.cend(), coeffs[0],

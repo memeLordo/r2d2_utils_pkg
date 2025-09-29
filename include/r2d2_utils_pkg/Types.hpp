@@ -88,7 +88,7 @@ struct payloadbase_t {
   T1 force{};
 };
 template <typename T, typename T1>
-struct manipulatorbase_t {
+struct nozzlebase_t {
   T1 force_needed{};
   T1 force_tolerance{};
   T r0{};
@@ -134,7 +134,7 @@ struct pipe_t {
   };
 };
 template <typename T>
-using manipulator_t = manipulatorbase_t<T, T>;
+using nozzle_t = nozzlebase_t<T, T>;
 }  // namespace config
 
 }  // namespace r2d2_type
