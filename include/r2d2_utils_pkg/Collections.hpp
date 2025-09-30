@@ -41,9 +41,8 @@ class NamedHandlerCollection {
   void initializeCollection(Node* node, First&& first, Rest&&... rest) {
     static_assert(std::is_convertible_v<First, std::string>,
                   "Name must be convertible to string!");
-    const std::string name_{std::forward<First>(first)};
-    m_objectVector.emplace_back(Type<T>(node, name_));
-    m_indexMap.emplace(name_, m_objectVector.size() - 1);
+    m_objectVector.emplace_back(node, std::forward<First>(first));
+    m_indexMap.emplace(std::forward<First>(first), m_objectVector.size() - 1);
     if constexpr (sizeof...(rest) > 0)
       initializeCollection(node, std::forward<Rest>(rest)...);
   };
