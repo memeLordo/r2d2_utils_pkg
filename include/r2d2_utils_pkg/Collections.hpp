@@ -7,21 +7,21 @@
 #include <string>
 #include <type_traits>
 #include <unordered_map>
-#include <vector>
 
-template <template <typename> class Type, typename T>
-class NamedHandlerCollection {
+template <template <typename> class Vector, template <typename> class Type,
+          typename T>
+class NamedHandlerVector {
  private:
   template <typename Func, typename... Args>
   using InvokeResultType = std::invoke_result_t<Func, Type<T>&, Args...>;
 
  protected:
-  std::vector<Type<T>> m_objectVector;
+  Vector<Type<T>> m_objectVector;
   std::unordered_map<std::string, size_t> m_indexMap;
 
  public:
   template <typename Node, typename... Args>
-  NamedHandlerCollection(Node* node, Args&&... names) {
+  NamedHandlerVector(Node* node, Args&&... names) {
     constexpr size_t size_{sizeof...(names)};
     static_assert(size_ > 0, "At least one name is required!");
     m_objectVector.reserve(size_);
@@ -55,8 +55,8 @@ class NamedHandlerCollection {
   };
   template <typename Func, typename... Args>
   auto get_each(Func func, Args&&... args) const
-      -> std::vector<InvokeResultType<Func, Args...>> {
-    std::vector<InvokeResultType<Func, Args...>> results_(size());
+      -> Vector<InvokeResultType<Func, Args...>> {
+    Vector<InvokeResultType<Func, Args...>> results_(size());
     std::transform(cbegin(), cend(), results_.begin(), [&](auto& obj) {
       return (obj.*func)(std::forward<Args>(args)...);
     });
