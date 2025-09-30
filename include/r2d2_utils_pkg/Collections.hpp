@@ -50,13 +50,13 @@ class NamedHandlerCollection {
  public:
   template <typename Func, typename... Args>
   void call_each(Func func, Args&&... args) {
-    std::for_each(cbegin(), cend(),
+    std::for_each(begin(), end(),
                   [&](auto& obj) { (obj.*func)(std::forward<Args>(args)...); });
   };
   template <typename Func, typename... Args>
   auto get_each(Func func, Args&&... args) const
       -> std::vector<InvokeResultType<Func, Args...>> {
-    std::vector<InvokeResultType<Func, Args...>> results_{size()};
+    std::vector<InvokeResultType<Func, Args...>> results_(size());
     std::transform(cbegin(), cend(), results_.begin(), [&](auto& obj) {
       return (obj.*func)(std::forward<Args>(args)...);
     });
