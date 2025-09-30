@@ -41,9 +41,8 @@ class NamedHandlerCollection {
   void initializeCollection(Node* node, First&& first, Rest&&... rest) {
     static_assert(std::is_convertible_v<First, std::string>,
                   "Name must be convertible to string!");
-    const std::string name_{std::forward<First>(first)};
-    m_objectVector.emplace_back(Type<T>(node, name_));
-    m_indexMap.emplace(name_, m_objectVector.size() - 1);
+    m_objectVector.emplace_back(node, std::forward<First>(first));
+    m_indexMap.emplace(std::forward<First>(first), m_objectVector.size() - 1);
     if constexpr (sizeof...(rest) > 0)
       initializeCollection(node, std::forward<Rest>(rest)...);
   };
@@ -51,13 +50,13 @@ class NamedHandlerCollection {
  public:
   template <typename Func, typename... Args>
   void call_each(Func func, Args&&... args) {
-    std::for_each(cbegin(), cend(),
+    std::for_each(begin(), end(),
                   [&](auto& obj) { (obj.*func)(std::forward<Args>(args)...); });
   };
   template <typename Func, typename... Args>
   auto get_each(Func func, Args&&... args) const
       -> std::vector<InvokeResultType<Func, Args...>> {
-    std::vector<InvokeResultType<Func, Args...>> results_{size()};
+    std::vector<InvokeResultType<Func, Args...>> results_(size());
     std::transform(cbegin(), cend(), results_.begin(), [&](auto& obj) {
       return (obj.*func)(std::forward<Args>(args)...);
     });
