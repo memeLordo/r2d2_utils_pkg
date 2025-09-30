@@ -26,7 +26,7 @@ class NamedHandlerVector {
     static_assert(size_ > 0, "At least one name is required!");
     m_objectVector.reserve(size_);
     m_indexMap.reserve(size_);
-    initializeCollection(node, std::forward<Args>(names)...);
+    initializeVector(node, std::forward<Args>(names)...);
   };
   Type<T>& operator()(const std::string& name) {
     if (auto it = m_indexMap.find(name); it != m_indexMap.end())
@@ -36,15 +36,15 @@ class NamedHandlerVector {
 
  private:
   template <typename Node>
-  void initializeCollection(Node*) {};
+  void initializeVector(Node*) {};
   template <typename Node, typename First, typename... Rest>
-  void initializeCollection(Node* node, First&& first, Rest&&... rest) {
+  void initializeVector(Node* node, First&& first, Rest&&... rest) {
     static_assert(std::is_convertible_v<First, std::string>,
                   "Name must be convertible to string!");
     m_objectVector.emplace_back(node, std::forward<First>(first));
     m_indexMap.emplace(std::forward<First>(first), m_objectVector.size() - 1);
     if constexpr (sizeof...(rest) > 0)
-      initializeCollection(node, std::forward<Rest>(rest)...);
+      initializeVector(node, std::forward<Rest>(rest)...);
   };
 
  public:
