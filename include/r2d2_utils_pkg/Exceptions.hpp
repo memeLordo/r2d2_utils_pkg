@@ -2,6 +2,7 @@
 #define R2D2_EXCEPTIONS_HPP
 
 #include <exception>
+#include <stack>
 
 namespace r2d2_exceptions {
 class ExceptionStack : std::runtime_error {
@@ -12,11 +13,11 @@ class ExceptionStack : std::runtime_error {
 
 class ExceptionHandler {
  private:
-  static inline std::exception_ptr s_exceptionPtr{};
+  static inline std::stack<std::exception_ptr> s_exceptionStack{};
 
  public:
   static void check() {
-    if (s_exceptionPtr) std::rethrow_exception(s_exceptionPtr);
+    if (!s_exceptionStack.empty()) throw ExceptionStack{};
   };
   template <typename Exception>
   static void record(Exception&& e) {
