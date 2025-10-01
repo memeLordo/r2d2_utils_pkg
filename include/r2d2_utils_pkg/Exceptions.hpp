@@ -5,7 +5,7 @@
 
 namespace r2d2_exceptions {
 
-class SafeExceptionConfig {
+class ExceptionHandler {
   static inline std::exception_ptr s_exceptionPtr{};
   static void check() {
     if (s_exceptionPtr) std::rethrow_exception(s_exceptionPtr);
