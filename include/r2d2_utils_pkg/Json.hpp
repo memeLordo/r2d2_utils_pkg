@@ -22,23 +22,18 @@ class IJsonConfig {
   explicit IJsonConfig(std::string_view fileName) {
     std::ifstream file{r2d2_json::getFilePath(fileName)};
     if (!file)
-      RECORD_ERROR(std::runtime_error(
-          {"File \"" + std::string{fileName} + ".json\" not found!"}));
+      throw std::runtime_error(
+          {"File \"" + std::string{fileName} + ".json\" not found!"});
     file >> m_json;
   };
 
  public:
   template <typename T = double>
   [[nodiscard]] T getParam(std::string_view key) const {
-    try {
-      if (!m_json.contains(key))
-        throw std::runtime_error(
-            {"Parameter \"" + std::string{key} + "\" not found!"});
-      return m_json.at(std::string(key)).template get<T>();
-    } catch (const std::exception& e) {
-      RECORD_ERROR(e);
-      return T{};
-    }
+    if (!m_json.contains(key))
+      throw std::runtime_error(
+          {"Parameter \"" + std::string{key} + "\" not found!"});
+    return m_json.at(std::string(key)).template get<T>();
   }
 };
 
@@ -62,15 +57,9 @@ class IJsonConfigMap : public IJsonConfig<> {
 
  public:
   [[nodiscard]] Type<T> getParams(std::string_view key) const {
-    try {
-      if (auto it = m_paramsMap.find(key); it != m_paramsMap.end())
-        return it->second;
-      throw std::runtime_error("Object \"" + std::string{key} +
-                               "\" not found!");
-    } catch (const std::exception& e) {
-      RECORD_ERROR(e);
-      return Type<T>{};
-    }
+    if (auto it = m_paramsMap.find(key); it != m_paramsMap.end())
+      return it->second;
+    throw std::runtime_error("Object \"" + std::string{key} + "\" not found!");
   };
 };
 #endif  // R2D2_CONFIG_JSON_HPP
