@@ -9,7 +9,7 @@
 #define PROCESS_ERROR_STACK() r2d2_errors::ExceptionHandler::process_stack()
 
 namespace r2d2_errors {
-class ExceptionStack : std::runtime_error {
+class ExceptionStack : public std::runtime_error {
  public:
   explicit ExceptionStack()
       : std::runtime_error("ExceptionStack has errors!") {};
