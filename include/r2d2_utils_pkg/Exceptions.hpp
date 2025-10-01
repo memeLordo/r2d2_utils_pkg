@@ -4,10 +4,6 @@
 #include <exception>
 #include <stack>
 
-#define CHECK_FOR_ERRORS() r2d2_errors::ExceptionHandler::check()
-#define RECORD_ERROR(exception) r2d2_errors::ExceptionHandler::record(exception)
-#define PROCESS_ERROR_STACK() r2d2_errors::ExceptionHandler::process_stack()
-
 namespace r2d2_errors {
 class ExceptionStack : public std::runtime_error {
  public:
@@ -43,4 +39,9 @@ class ExceptionHandler {
   static void print_exception(const std::exception& e);
 };
 }  // namespace r2d2_errors
+
+#define CHECK_FOR_ERRORS() r2d2_errors::ExceptionHandler::check()
+#define RECORD_ERROR(exception) r2d2_errors::ExceptionHandler::record(exception)
+#define PROCESS_ERROR_STACK() r2d2_errors::ExceptionHandler::process_stack()
+
 #endif  // R2D2_EXCEPTIONS_HPP
