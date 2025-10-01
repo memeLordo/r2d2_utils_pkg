@@ -17,7 +17,7 @@ class ExceptionHandler {
 
  public:
   static void check() {
-    if (!s_exceptionStack.empty()) throw ExceptionStack{};
+    if (has_exceptions()) throw ExceptionStack{};
   };
   template <typename Exception>
   static void record(Exception&& e) {
@@ -31,6 +31,7 @@ class ExceptionHandler {
         s_exceptionStack.pop();
       }
   };
+  static bool has_exceptions() { return !s_exceptionStack.empty(); };
   static void print_exception(const std::exception& e);
 };
 }  // namespace r2d2_exceptions
