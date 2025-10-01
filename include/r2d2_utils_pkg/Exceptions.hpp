@@ -23,6 +23,22 @@ class ExceptionHandler {
   static void record(Exception&& e) {
     s_exceptionStack.emplace(std::forward<Exception>(e));
   };
+  static void process_stack() {
+
+    while (!temp.empty()) {
+      auto eptr = temp.top();
+      temp.pop();
+
+      try {
+        std::rethrow_exception(s_exceptionStack.top());
+      } catch (const std::exception& e) {
+        std::cerr << "Level " << level++ << ": " << typeid(e).name() << " - "
+                  << e.what() << '\n';
+      } catch (...) {
+        std::cerr << "Level " << level++ << ": Unknown exception\n";
+      }
+    }
+  }
 };
 
 }  // namespace r2d2_exceptions
