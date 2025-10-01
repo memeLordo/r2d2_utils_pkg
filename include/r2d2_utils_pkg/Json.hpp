@@ -19,7 +19,7 @@ class IJsonConfig {
   nlohmann::json m_json;
 
  public:
-  IJsonConfig(std::string_view fileName) {
+  IJsonConfig(std::string_view fileName) noexcept {
     try {
       std::ifstream file{r2d2_json::getFilePath(fileName)};
       if (!file)
@@ -33,7 +33,7 @@ class IJsonConfig {
 
  public:
   template <typename U = T>
-  [[nodiscard]] U getParam(std::string_view key) const {
+  [[nodiscard]] U getParam(std::string_view key) const noexcept {
     try {
       if (!m_json.contains(key))
         throw std::runtime_error(
@@ -55,7 +55,7 @@ class IJsonConfigMap : public IJsonConfig<T> {
   IJsonConfigMap(std::string_view fileName);
 
  public:
-  [[nodiscard]] Type<T> getParams(std::string_view key) const {
+  [[nodiscard]] Type<T> getParams(std::string_view key) const noexcept {
     try {
       if (auto it = m_paramsMap.find(key); it != m_paramsMap.end())
         return it->second;
