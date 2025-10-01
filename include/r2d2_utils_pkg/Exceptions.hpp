@@ -8,9 +8,9 @@
 #include "Debug.hpp"
 
 namespace r2d2_errors {
-class ExceptionStack : public std::runtime_error {
+class RuntimeErrorStack : public std::runtime_error {
  public:
-  explicit ExceptionStack()
+  explicit RuntimeErrorStack()
       : std::runtime_error("ExceptionStack has errors!") {};
 };
 
@@ -20,7 +20,7 @@ class ExceptionHandler {
 
  public:
   static void check() {
-    if (has_exceptions()) throw ExceptionStack{};
+    if (has_exceptions()) throw RuntimeErrorStack{};
   };
   static void record(const std::exception& e) {
     s_exceptionStack.emplace(e.what());
