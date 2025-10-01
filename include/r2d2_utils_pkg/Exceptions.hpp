@@ -5,7 +5,7 @@
 #include <iostream>
 #include <stack>
 
-#include "r2d2_utils_pkg/Debug.hpp"
+#include "Debug.hpp"
 
 namespace r2d2_errors {
 class ExceptionStack : public std::runtime_error {

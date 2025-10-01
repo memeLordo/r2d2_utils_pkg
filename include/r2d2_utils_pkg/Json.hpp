@@ -7,7 +7,7 @@
 #include <string_view>
 #include <unordered_map>
 
-#include "r2d2_utils_pkg/Exceptions.hpp"
+#include "Exceptions.hpp"
 
 namespace r2d2_json {
 std::string getFilePath(std::string_view fileName);
