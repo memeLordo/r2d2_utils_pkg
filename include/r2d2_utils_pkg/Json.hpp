@@ -47,7 +47,14 @@ class IJsonConfig {
 };
 
 template <>
-inline IJsonConfig<true>::IJsonConfig(std::string_view fileName){};
+inline IJsonConfig<true>::IJsonConfig(std::string_view fileName) {
+  try {
+    std::ifstream file{r2d2_json::getFilePath(fileName)};
+    file >> m_json;
+  } catch (const std::exception& e) {
+    RECORD_ERROR(e);
+  }
+};
 
 template <template <typename> class Type, typename T = double>
 class IJsonConfigMap : public IJsonConfig<> {
