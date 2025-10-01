@@ -19,12 +19,16 @@ class IJsonConfig {
   nlohmann::json m_json;
 
  public:
-  IJsonConfig(std::string_view fileName) {
-    std::ifstream file{r2d2_json::getFilePath(fileName)};
-    if (!file)
-      RECORD_ERROR(std::runtime_error(
-          {"File \"" + std::string{fileName} + ".json\" not found!"}));
-    file >> m_json;
+  explicit IJsonConfig(std::string_view fileName) {
+    try {
+      std::ifstream file{r2d2_json::getFilePath(fileName)};
+      if (!file)
+        RECORD_ERROR(std::runtime_error(
+            {"File \"" + std::string{fileName} + ".json\" not found!"}));
+      file >> m_json;
+    } catch (const std::exception& e) {
+      RECORD_ERROR(e);
+    }
   };
 
  public:
