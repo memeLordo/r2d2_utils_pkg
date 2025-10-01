@@ -47,7 +47,7 @@ class IJsonConfig {
 };
 
 template <>
-IJsonConfig<true>::IJsonConfig(std::string_view fileName) {}
+inline IJsonConfig<true>::IJsonConfig(std::string_view fileName){};
 
 template <template <typename> class Type, typename T = double>
 class IJsonConfigMap : public IJsonConfig<> {
