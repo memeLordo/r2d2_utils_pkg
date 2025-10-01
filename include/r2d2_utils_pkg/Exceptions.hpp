@@ -6,7 +6,10 @@
 namespace r2d2_exceptions {
 
 class ExceptionHandler {
+ private:
   static inline std::exception_ptr s_exceptionPtr{};
+
+ public:
   static void check() {
     if (s_exceptionPtr) std::rethrow_exception(s_exceptionPtr);
   };
