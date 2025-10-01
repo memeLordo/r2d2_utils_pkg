@@ -7,6 +7,8 @@
 #include <string_view>
 #include <unordered_map>
 
+#include "r2d2_utils_pkg/Exceptions.hpp"
+
 namespace r2d2_json {
 std::string getFilePath(std::string_view fileName);
 }  // namespace r2d2_json
@@ -18,20 +20,29 @@ class IJsonConfig {
 
  public:
   IJsonConfig(std::string_view fileName) {
-    std::ifstream file{r2d2_json::getFilePath(fileName)};
-    if (!file)
-      throw std::runtime_error(
-          {"File \"" + std::string{fileName} + ".json\" not found!"});
-    file >> m_json;
+    try {
+      std::ifstream file{r2d2_json::getFilePath(fileName)};
+      if (!file)
+        throw std::runtime_error(
+            {"File \"" + std::string{fileName} + ".json\" not found!"});
+      file >> m_json;
+    } catch (const std::exception& e) {
+      RECORD_ERROR(e);
+    }
   };
 
  public:
   template <typename U = T>
   [[nodiscard]] U getParam(std::string_view key) const {
-    if (!m_json.contains(key))
-      throw std::runtime_error(
-          {"Parameter \"" + std::string{key} + "\" not found!"});
-    return m_json.at(std::string(key)).template get<U>();
+    try {
+      if (!m_json.contains(key))
+        throw std::runtime_error(
+            {"Parameter \"" + std::string{key} + "\" not found!"});
+      return m_json.at(std::string(key)).template get<U>();
+    } catch (const std::exception& e) {
+      RECORD_ERROR(e);
+      return U{};
+    }
   }
 };
 
@@ -45,9 +56,15 @@ class IJsonConfigMap : public IJsonConfig<T> {
 
  public:
   [[nodiscard]] Type<T> getParams(std::string_view key) const {
-    if (auto it = m_paramsMap.find(key); it != m_paramsMap.end())
-      return it->second;
-    throw std::runtime_error("Object \"" + std::string{key} + "\" not found!");
+    try {
+      if (auto it = m_paramsMap.find(key); it != m_paramsMap.end())
+        return it->second;
+      throw std::runtime_error("Object \"" + std::string{key} +
+                               "\" not found!");
+    } catch (const std::exception& e) {
+      RECORD_ERROR(e);
+      return Type<T>{};
+    }
   };
 };
 #endif  // R2D2_CONFIG_JSON_HPP
