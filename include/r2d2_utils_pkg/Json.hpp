@@ -13,7 +13,7 @@ namespace r2d2_json {
 std::string getFilePath(std::string_view fileName);
 }  // namespace r2d2_json
 
-template <typename T = double, bool isSafe = false>
+template <bool isSafe = false>
 class IJsonConfig {
  protected:
   nlohmann::json m_json;
@@ -47,7 +47,7 @@ class IJsonConfig {
 };
 
 template <template <typename> class Type, typename T = double>
-class IJsonConfigMap : public IJsonConfig<T> {
+class IJsonConfigMap : public IJsonConfig<> {
  private:
   std::unordered_map<std::string_view, Type<T>> m_paramsMap;
 
