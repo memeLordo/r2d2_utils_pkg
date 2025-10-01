@@ -38,7 +38,7 @@ class ExceptionHandler {
 };
 }  // namespace r2d2_errors
 
-#define CHECK_FOR_ERRORS() r2d2_errors::ExceptionHandler::check()
+#define CHECK_FOR_STACK_ERRORS() r2d2_errors::ExceptionHandler::check()
 #define RECORD_ERROR(exception) r2d2_errors::ExceptionHandler::record(exception)
 #define PROCESS_ERROR_STACK() r2d2_errors::ExceptionHandler::process_stack()
 
