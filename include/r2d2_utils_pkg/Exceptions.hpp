@@ -4,7 +4,7 @@
 #include <exception>
 #include <stack>
 
-namespace r2d2_exceptions {
+namespace r2d2_errors {
 class ExceptionStack : std::runtime_error {
  public:
   explicit ExceptionStack()
@@ -34,5 +34,5 @@ class ExceptionHandler {
   static bool has_exceptions() { return !s_exceptionStack.empty(); };
   static void print_exception(const std::exception& e);
 };
-}  // namespace r2d2_exceptions
+}  // namespace r2d2_errors
 #endif  // R2D2_EXCEPTIONS_HPP
