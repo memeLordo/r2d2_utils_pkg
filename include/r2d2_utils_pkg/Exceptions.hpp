@@ -26,19 +26,19 @@ class ExceptionHandler {
   static void check() {
     if (has_exceptions()) throw RuntimeErrorStack{};
   };
-  static void record(const std::exception& e) {
+  static void record(const std::exception& e) noexcept {
     s_exceptionStack.emplace(e.what());
   };
-  static void process_stack() {
+  static void process_stack() noexcept {
     while (has_exceptions()) {
       print_exception(s_exceptionStack.top());
       s_exceptionStack.pop();
     }
   };
-  static void print_exception(std::string_view err_msg) {
+  static void print_exception(std::string_view err_msg) noexcept {
     std::cerr << RED("Got exception: " << err_msg) << "\n";
   };
-  static bool has_exceptions() { return !s_exceptionStack.empty(); };
+  static bool has_exceptions() noexcept { return !s_exceptionStack.empty(); };
 };
 }  // namespace r2d2_errors
 #endif  // R2D2_EXCEPTIONS_HPP
