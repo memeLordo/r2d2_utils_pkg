@@ -25,7 +25,11 @@ class ExceptionHandler {
   };
   template <typename Exception>
   static void record(Exception&& e) {
-    s_exceptionStack.emplace(std::forward<Exception>(e));
+    try {
+      throw std::forward<Exception>(e);
+    } catch (...) {
+      s_exceptionStack.emplace(std::current_exception());
+    }
   };
   static void process_stack() {
     while (!s_exceptionStack.empty()) try {
