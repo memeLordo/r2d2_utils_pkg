@@ -20,23 +20,8 @@ class ExceptionHandler {
   };
   template <typename Exception>
   static void record(Exception&& e) {
-    if (s_exceptionPtr) {
-      try {
-        std::rethrow_exception(s_exceptionPtr);
-      } catch (...) {
-        try {
-          std::throw_with_nested(std::forward<Exception>(e));
-        } catch (...) {
-          s_exceptionPtr = std::current_exception();
-        }
-      }
-    }
-    try {
-      throw std::forward<Exception>(e);
-    } catch (...) {
-      s_exceptionPtr = std::current_exception();
-    }
-  }
+    s_exceptionStack.emplace(std::forward<Exception>(e));
+  };
 };
 
 }  // namespace r2d2_exceptions
