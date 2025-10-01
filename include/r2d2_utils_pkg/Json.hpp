@@ -7,17 +7,19 @@
 #include <string_view>
 #include <unordered_map>
 
+#include "Exceptions.hpp"
+
 namespace r2d2_json {
 std::string getFilePath(std::string_view fileName);
 }  // namespace r2d2_json
 
-template <typename T = double>
+template <bool isSafe = false>
 class IJsonConfig {
  protected:
   nlohmann::json m_json;
 
  public:
-  IJsonConfig(std::string_view fileName) {
+  explicit IJsonConfig(std::string_view fileName) {
     std::ifstream file{r2d2_json::getFilePath(fileName)};
     if (!file)
       throw std::runtime_error(
@@ -26,17 +28,27 @@ class IJsonConfig {
   };
 
  public:
-  template <typename U = T>
-  [[nodiscard]] U getParam(std::string_view key) const {
+  template <typename T = double>
+  [[nodiscard]] T getParam(std::string_view key) const {
     if (!m_json.contains(key))
       throw std::runtime_error(
           {"Parameter \"" + std::string{key} + "\" not found!"});
-    return m_json.at(std::string(key)).template get<U>();
+    return m_json.at(std::string(key)).template get<T>();
+  }
+};
+
+template <>
+inline IJsonConfig<true>::IJsonConfig(std::string_view fileName) {
+  try {
+    std::ifstream file{r2d2_json::getFilePath(fileName)};
+    file >> m_json;
+  } catch (const std::exception& e) {
+    RECORD_ERROR(e);
   }
 };
 
 template <template <typename> class Type, typename T = double>
-class IJsonConfigMap : public IJsonConfig<T> {
+class IJsonConfigMap : public IJsonConfig<> {
  private:
   std::unordered_map<std::string_view, Type<T>> m_paramsMap;
 

@@ -57,14 +57,6 @@ class Wrapper {
   };
 
  public:
-  template <typename T>
-  [[nodiscard]] static constexpr T wrap(const T value) {
-    return static_cast<T>(value / getRatio());
-  };
-  template <typename T>
-  [[nodiscard]] static constexpr T unwrap(const T rawValue) {
-    return static_cast<T>(rawValue * getRatio());
-  };
   template <typename T, typename T2>
   [[nodiscard]] static constexpr T wrap(const T2 value) {
     return static_cast<T>(value / getRatio());
