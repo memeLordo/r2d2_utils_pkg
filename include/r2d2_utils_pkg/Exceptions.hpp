@@ -10,6 +10,25 @@ class ExceptionHandler {
   static void check() {
     if (s_exceptionPtr) std::rethrow_exception(s_exceptionPtr);
   };
+  template <typename Exception>
+  static void record(Exception&& e) {
+    if (s_exceptionPtr) {
+      try {
+        std::rethrow_exception(s_exceptionPtr);
+      } catch (...) {
+        try {
+          std::throw_with_nested(std::forward<Exception>(e));
+        } catch (...) {
+          s_exceptionPtr = std::current_exception();
+        }
+      }
+    }
+    try {
+      throw std::forward<Exception>(e);
+    } catch (...) {
+      s_exceptionPtr = std::current_exception();
+    }
+  }
 };
 
 class Exception : public std::runtime_error {
