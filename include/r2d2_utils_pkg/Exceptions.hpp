@@ -4,6 +4,11 @@
 #include <exception>
 
 namespace r2d2_exceptions {
+class ExceptionStack : std::runtime_error {
+ public:
+  explicit ExceptionStack()
+      : std::runtime_error("ExceptionStack has errors!") {};
+};
 
 class ExceptionHandler {
  private:
@@ -34,9 +39,5 @@ class ExceptionHandler {
   }
 };
 
-class Exception : public std::runtime_error {
- public:
-  explicit Exception(std::string message) : std::runtime_error(message) {}
-};
 }  // namespace r2d2_exceptions
 #endif  // R2D2_EXCEPTIONS_HPP
