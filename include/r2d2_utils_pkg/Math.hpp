@@ -46,34 +46,31 @@ template <typename T>
 }  // namespace r2d2_math
 
 namespace r2d2_process {
-template <class Derived>
-class Wrapper {
- protected:
-  [[nodiscard]] static constexpr auto getRatio() {
-    static_assert(std::is_arithmetic_v<decltype(Derived::s_convertRatio)>,
-                  "s_convertRatio must be of an arithmetic type!");
-    assert(Derived::s_convertRatio != 0);
-    return Derived::s_convertRatio;
-  };
+template <const double& ratio>
+struct Wrapper {
+  Wrapper() = delete;
+  Wrapper(const Wrapper&) = delete;
+  Wrapper(Wrapper&&) = delete;
+  Wrapper& operator=(const Wrapper&) = delete;
+  Wrapper& operator=(Wrapper&&) = delete;
 
- public:
   template <typename T, typename T2>
   [[nodiscard]] static constexpr T wrap(const T2 value) {
-    return static_cast<T>(value / getRatio());
+    return static_cast<T>(value / ratio);
   };
   template <typename T, typename T2>
   [[nodiscard]] static constexpr T unwrap(const T2 rawValue) {
-    return static_cast<T>(rawValue * getRatio());
+    return static_cast<T>(rawValue * ratio);
   };
 };
-class Angle : public Wrapper<Angle> {
-  friend class Wrapper<Angle>;
-  static const double s_convertRatio;
-};
-class Force : public Wrapper<Force> {
-  friend class Wrapper<Force>;
-  static const double s_convertRatio;
-};
+
+namespace config {
+extern const double g_angleRatio;
+extern const double g_forceRatio;
+}  // namespace config
+
+using Angle = Wrapper<config::g_angleRatio>;
+using Force = Wrapper<config::g_forceRatio>;
 }  // namespace r2d2_process
 
 #endif  // R2D2_MATH_HPP

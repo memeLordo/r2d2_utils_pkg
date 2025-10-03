@@ -24,27 +24,20 @@ class NamedHandlerVector {
   NamedHandlerVector(Node* node, Args&&... names) {
     constexpr size_t size_{sizeof...(names)};
     static_assert(size_ > 0, "At least one name is required!");
+    static_assert((std::is_convertible_v<Args, std::string> && ...),
+                  "All names must be convertible to string!");
     m_objectVector.reserve(size_);
     m_indexMap.reserve(size_);
-    initializeVector(node, std::forward<Args>(names)...);
+
+    size_t index_{0};
+    ((m_objectVector.emplace_back(node, std::forward<Args>(names)),
+      m_indexMap.emplace(std::forward<Args>(names), index_++)),
+     ...);
   };
   Type<T>& operator()(const std::string& name) {
     if (auto it = m_indexMap.find(name); it != m_indexMap.end())
       return m_objectVector[it->second];
     throw std::out_of_range("Name \"" + name + "\" not found!");
-  };
-
- private:
-  template <typename Node>
-  void initializeVector(Node*) {};
-  template <typename Node, typename First, typename... Rest>
-  void initializeVector(Node* node, First&& first, Rest&&... rest) {
-    static_assert(std::is_convertible_v<First, std::string>,
-                  "Name must be convertible to string!");
-    m_objectVector.emplace_back(node, std::forward<First>(first));
-    m_indexMap.emplace(std::forward<First>(first), m_objectVector.size() - 1);
-    if constexpr (sizeof...(rest) > 0)
-      initializeVector(node, std::forward<Rest>(rest)...);
   };
 
  public:
@@ -54,8 +47,7 @@ class NamedHandlerVector {
                   [&](auto& obj) { (obj.*func)(std::forward<Args>(args)...); });
   };
   template <typename Func, typename... Args>
-  auto get_each(Func func, Args&&... args) const
-      -> Vector<InvokeResultType<Func, Args...>> {
+  auto get_each(Func func, Args&&... args) const {
     Vector<InvokeResultType<Func, Args...>> results_(size());
     std::transform(cbegin(), cend(), results_.begin(), [&](auto& obj) {
       return (obj.*func)(std::forward<Args>(args)...);
