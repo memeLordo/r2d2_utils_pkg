@@ -10,7 +10,7 @@
 #include "Exceptions.hpp"
 
 namespace r2d2_json {
-std::string getFilePath(std::string_view fileName);
+std::string getFilePath(std::string_view fileName) noexcept;
 }  // namespace r2d2_json
 
 template <bool isSafe = false>
