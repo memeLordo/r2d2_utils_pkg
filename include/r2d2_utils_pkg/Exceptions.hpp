@@ -16,14 +16,14 @@ namespace r2d2_errors {
 class RuntimeErrorRecord : public std::runtime_error {
  public:
   explicit RuntimeErrorRecord()
-      : std::runtime_error("Errorcollector has errors!") {};
+      : std::runtime_error("ErrorRecord has errors!") {};
 };
 
 namespace collector {
 namespace etc {
 inline std::queue<std::string> errorQueue{};
 }
-inline bool has_errors() { return !etc::errorQueue.empty(); };
+inline bool has_errors() noexcept { return !etc::errorQueue.empty(); };
 inline void check() {
   if (has_errors()) throw RuntimeErrorRecord{};
 };
