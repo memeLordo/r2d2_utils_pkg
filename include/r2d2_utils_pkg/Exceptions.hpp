@@ -9,6 +9,7 @@
 
 #define CHECK_FOR_STACK_ERRORS() r2d2_errors::stack::check()
 #define RECORD_ERROR(error) r2d2_errors::stack::record(error)
+#define PRINT_ERROR(msg) r2d2_errors::stack::print_exception(msg)
 #define PROCESS_ERROR_STACK() r2d2_errors::stack::process_stack()
 
 namespace r2d2_errors {
