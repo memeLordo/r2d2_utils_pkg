@@ -49,6 +49,20 @@ inline IJsonConfig<true>::IJsonConfig(std::string_view fileName) {
     RECORD_ERROR(e);
   }
 };
+template <>
+template <typename T>
+[[nodiscard]]
+inline T IJsonConfig<true>::getParam(std::string_view key) const {
+  try {
+    if (!m_json.contains(key))
+      throw std::runtime_error(
+          {"Parameter \"" + std::string{key} + "\" not found!"});
+    return m_json.at(std::string(key)).template get<T>();
+  } catch (const std::exception& e) {
+    RECORD_ERROR(e);
+    return T{};
+  }
+};
 
 template <template <typename> class Type, typename T = double>
 class IJsonConfigMap : public IJsonConfig<> {
