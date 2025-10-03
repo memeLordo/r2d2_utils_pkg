@@ -15,7 +15,7 @@ namespace r2d2_errors {
 class RuntimeErrorStack : public std::runtime_error {
  public:
   explicit RuntimeErrorStack()
-      : std::runtime_error("ExceptionStack has errors!") {};
+      : std::runtime_error("ErrorStack has errors!") {};
 };
 
 class ExceptionHandler {
