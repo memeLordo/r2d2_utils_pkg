@@ -24,11 +24,11 @@ namespace etc {
 inline std::queue<std::string> errorQueue{};
 }
 inline bool has_errors() { return !etc::errorQueue.empty(); };
-inline void record(const std::exception& e) noexcept {
-  etc::errorQueue.emplace(e.what());
-};
 inline void check() {
   if (has_errors()) throw RuntimeErrorRecord{};
+};
+inline void record(const std::exception& e) noexcept {
+  etc::errorQueue.emplace(e.what());
 };
 inline void print_error(std::string_view err_msg) noexcept {
   std::cerr << RED("Got exception: " << err_msg) << "\n";
