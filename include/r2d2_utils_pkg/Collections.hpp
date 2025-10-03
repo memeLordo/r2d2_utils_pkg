@@ -47,8 +47,7 @@ class NamedHandlerVector {
                   [&](auto& obj) { (obj.*func)(std::forward<Args>(args)...); });
   };
   template <typename Func, typename... Args>
-  auto get_each(Func func, Args&&... args) const
-      -> Vector<InvokeResultType<Func, Args...>> {
+  auto get_each(Func func, Args&&... args) const {
     Vector<InvokeResultType<Func, Args...>> results_(size());
     std::transform(cbegin(), cend(), results_.begin(), [&](auto& obj) {
       return (obj.*func)(std::forward<Args>(args)...);
