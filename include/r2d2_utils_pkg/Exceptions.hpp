@@ -3,7 +3,7 @@
 
 #include <exception>
 #include <iostream>
-#include <stack>
+#include <queue>
 
 #include "Debug.hpp"
 
@@ -21,11 +21,11 @@ class RuntimeErrorStack : public std::runtime_error {
 
 namespace stack {
 namespace etc {
-inline std::stack<std::string> exceptionStack{};
+inline std::queue<std::string> exceptionQueue{};
 }
-inline bool has_exceptions() { return !etc::exceptionStack.empty(); };
+inline bool has_exceptions() { return !etc::exceptionQueue.empty(); };
 inline void record(const std::exception& e) noexcept {
-  etc::exceptionStack.emplace(e.what());
+  etc::exceptionQueue.emplace(e.what());
 };
 inline void check() {
   if (has_exceptions()) throw RuntimeErrorStack{};
@@ -35,8 +35,8 @@ inline void print_exception(std::string_view err_msg) noexcept {
 };
 inline void process_stack() noexcept {
   while (has_exceptions()) {
-    print_exception(etc::exceptionStack.top());
-    etc::exceptionStack.pop();
+    print_exception(etc::exceptionQueue.front());
+    etc::exceptionQueue.pop();
   }
 };
 }  // namespace stack
