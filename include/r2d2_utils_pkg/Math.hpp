@@ -48,6 +48,11 @@ template <typename T>
 namespace r2d2_process {
 template <const double& ratio>
 struct Wrapper {
+  Wrapper() = delete;
+  Wrapper(const Wrapper&) = delete;
+  Wrapper(Wrapper&&) = delete;
+  Wrapper& operator=(const Wrapper&) = delete;
+  Wrapper& operator=(Wrapper&&) = delete;
 
   template <typename T, typename T2>
   [[nodiscard]] static constexpr T wrap(const T2 value) {
