@@ -7,39 +7,39 @@
 
 #include "Debug.hpp"
 
-#define CHECK_FOR_STACK_ERRORS() r2d2_errors::stack::check()
-#define RECORD_ERROR(error) r2d2_errors::stack::record(error)
-#define PRINT_ERROR(msg) r2d2_errors::stack::print_exception(msg)
-#define PROCESS_ERROR_STACK() r2d2_errors::stack::process_stack()
+#define CHECK_FOR_ERROR_RECORD() r2d2_errors::collector::check()
+#define RECORD_ERROR(error) r2d2_errors::collector::record(error)
+#define PRINT_ERROR(msg) r2d2_errors::collector::print_error(msg)
+#define PROCESS_ERROR_RECORD() r2d2_errors::collector::process_errors()
 
 namespace r2d2_errors {
-class RuntimeErrorStack : public std::runtime_error {
+class RuntimeErrorRecord : public std::runtime_error {
  public:
-  explicit RuntimeErrorStack()
-      : std::runtime_error("ErrorStack has errors!") {};
+  explicit RuntimeErrorRecord()
+      : std::runtime_error("Errorcollector has errors!") {};
 };
 
-namespace stack {
+namespace collector {
 namespace etc {
-inline std::queue<std::string> exceptionQueue{};
+inline std::queue<std::string> errorQueue{};
 }
-inline bool has_exceptions() { return !etc::exceptionQueue.empty(); };
+inline bool has_errors() { return !etc::errorQueue.empty(); };
 inline void record(const std::exception& e) noexcept {
-  etc::exceptionQueue.emplace(e.what());
+  etc::errorQueue.emplace(e.what());
 };
 inline void check() {
-  if (has_exceptions()) throw RuntimeErrorStack{};
+  if (has_errors()) throw RuntimeErrorRecord{};
 };
-inline void print_exception(std::string_view err_msg) noexcept {
+inline void print_error(std::string_view err_msg) noexcept {
   std::cerr << RED("Got exception: " << err_msg) << "\n";
 };
-inline void process_stack() noexcept {
-  while (has_exceptions()) {
-    print_exception(etc::exceptionQueue.front());
-    etc::exceptionQueue.pop();
+inline void process_errors() noexcept {
+  while (has_errors()) {
+    print_error(etc::errorQueue.front());
+    etc::errorQueue.pop();
   }
 };
-}  // namespace stack
+}  // namespace collector
 
 }  // namespace r2d2_errors
 #endif  // R2D2_EXCEPTIONS_HPP
