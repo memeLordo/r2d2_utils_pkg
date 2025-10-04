@@ -38,4 +38,22 @@ inline void process_errors() noexcept {
   }
 };
 }  // namespace r2d2_errors::collector
+
+namespace r2d2_errors::json {
+struct FileNotFoundError : public std::runtime_error {
+  explicit FileNotFoundError(std::string_view fileName)
+      : std::runtime_error("File \"" + std::string{fileName} +
+                           ".json\" not "
+                           "found!") {};
+};
+struct ParseError : public std::runtime_error {
+  explicit ParseError(std::string_view key)
+      : std::runtime_error("Parameter \"" + std::string{key} +
+                           "\" not found!") {};
+};
+struct ObjectParseError : public std::runtime_error {
+  explicit ObjectParseError(std::string_view key)
+      : std::runtime_error("Object \"" + std::string{key} + "\" not found!") {};
+};
+}  // namespace r2d2_errors::json
 #endif  // R2D2_EXCEPTIONS_HPP
