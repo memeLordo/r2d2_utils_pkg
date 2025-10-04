@@ -40,20 +40,33 @@ inline void process_errors() noexcept {
 }  // namespace r2d2_errors::collector
 
 namespace r2d2_errors::json {
-struct FileNotFoundError : public std::runtime_error {
+class RuntimeError : public std::runtime_error {
+ protected:
+  explicit RuntimeError(std::string message)
+      : std::runtime_error(std::move(message)) {};
+
+  static std::string makeMessage(std::string_view prefix, std::string_view item,
+                                 std::string_view suffix) {
+    std::string result;
+    result.reserve(prefix.size() + item.size() + suffix.size());
+    result += prefix;
+    result += item;
+    result += suffix;
+    return result;
+  };
+};
+
+struct FileNotFoundError : public RuntimeError {
   explicit FileNotFoundError(std::string_view fileName)
-      : std::runtime_error("File \"" + std::string{fileName} +
-                           ".json\" not "
-                           "found!") {};
+      : RuntimeError(makeMessage("File \"", fileName, ".json\" not found!")) {};
 };
-struct ParseError : public std::runtime_error {
+struct ParseError : public RuntimeError {
   explicit ParseError(std::string_view key)
-      : std::runtime_error("Parameter \"" + std::string{key} +
-                           "\" not found!") {};
+      : RuntimeError(makeMessage("Parameter \"", key, "\" not found!")) {};
 };
-struct ObjectParseError : public std::runtime_error {
+struct ObjectParseError : public RuntimeError {
   explicit ObjectParseError(std::string_view key)
-      : std::runtime_error("Object \"" + std::string{key} + "\" not found!") {};
+      : RuntimeError(makeMessage("Object \"", key, "\" not found!")) {};
 };
 }  // namespace r2d2_errors::json
 #endif  // R2D2_EXCEPTIONS_HPP
