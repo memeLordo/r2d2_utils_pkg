@@ -12,14 +12,12 @@
 #define PRINT_ERROR(msg) r2d2_errors::collector::print_error(msg)
 #define PROCESS_ERROR_RECORD() r2d2_errors::collector::process_errors()
 
-namespace r2d2_errors {
-class RuntimeErrorRecord : public std::runtime_error {
- public:
+namespace r2d2_errors::collector {
+struct RuntimeErrorRecord : public std::runtime_error {
   explicit RuntimeErrorRecord()
       : std::runtime_error("ErrorRecord has errors!") {};
 };
 
-namespace collector {
 namespace etc {
 inline std::queue<std::string> errorQueue{};
 }
@@ -39,7 +37,5 @@ inline void process_errors() noexcept {
     etc::errorQueue.pop();
   }
 };
-}  // namespace collector
-
-}  // namespace r2d2_errors
+}  // namespace r2d2_errors::collector
 #endif  // R2D2_EXCEPTIONS_HPP
