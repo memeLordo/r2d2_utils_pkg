@@ -6,15 +6,15 @@
 
 #include "Exceptions.hpp"
 
-template <template <typename> class Vector, template <typename> class Type,
+template <template <typename> class Vector, template <typename> class Handler,
           typename T>
 class NamedHandlerVector {
  private:
   template <typename Func, typename... Args>
-  using InvokeResultType = std::invoke_result_t<Func, Type<T>&, Args...>;
+  using InvokeResultType = std::invoke_result_t<Func, Handler<T>&, Args...>;
 
  protected:
-  Vector<Type<T>> m_objectVector;
+  Vector<Handler<T>> m_objectVector;
   std::unordered_map<std::string, size_t> m_indexMap;
 
  public:
@@ -32,7 +32,7 @@ class NamedHandlerVector {
       m_indexMap.emplace(std::forward<Args>(names), index_++)),
      ...);
   };
-  Type<T>& operator()(std::string_view name) {
+  Handler<T>& operator()(std::string_view name) {
     if (auto it = m_indexMap.find(std::string{name}); it != m_indexMap.end())
       return m_objectVector[it->second];
     throw r2d2_errors::collections::NameError{name};
