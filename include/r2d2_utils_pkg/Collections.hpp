@@ -4,9 +4,6 @@
 #include <algorithm>
 #include <cassert>
 #include <stdexcept>
-#include <string>
-#include <type_traits>
-#include <unordered_map>
 
 template <template <typename> class Vector, template <typename> class Type,
           typename T>
