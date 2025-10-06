@@ -18,11 +18,19 @@ class BaseError : public Error {
  protected:
   template <typename... String>
   explicit BaseError(String&&... str)
-      : Error{[&str...]() {
-          std::string result;
-          (result.append(str), ...);
-          return result;
-        }()} {};
+      : Error{createMessage(std::forward<String>(str)...)} {}
+
+ private:
+  template <typename... String>
+  static std::string createMessage(String&&... str) {
+    size_t totalSize_{(std::size(str) + ...)};
+
+    std::string result_;
+    result_.reserve(totalSize_);
+    (result_.append(std::forward<String>(str)), ...);
+
+    return result_;
+  }
 };
 }  // namespace r2d2_errors
 
