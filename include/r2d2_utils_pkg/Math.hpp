@@ -47,7 +47,7 @@ template <typename T>
 
 namespace r2d2_process {
 template <const double& ratio>
-struct Wrapper {
+struct Wrapper final {
   Wrapper() = delete;
   Wrapper(const Wrapper&) = delete;
   Wrapper(Wrapper&&) = delete;

@@ -7,14 +7,41 @@
 
 #include "Debug.hpp"
 
-#define CHECK_FOR_ERROR_RECORD() r2d2_errors::collector::check()
-#define RECORD_ERROR(error) r2d2_errors::collector::record(error)
-#define PRINT_ERROR(msg) r2d2_errors::collector::print_error(msg)
-#define PROCESS_ERROR_RECORD() r2d2_errors::collector::process_errors()
+#define CHECK_FOR_ERROR_RECORD() r2d2_errors::agent::check()
+#define RECORD_ERROR(error) r2d2_errors::agent::record(error)
+#define PRINT_ERROR(msg) r2d2_errors::agent::print_error(msg)
+#define PROCESS_ERROR_RECORD() r2d2_errors::agent::process_errors()
 
-namespace r2d2_errors::collector {
-struct RuntimeErrorRecord : public std::runtime_error {
-  explicit RuntimeErrorRecord()
+namespace r2d2_errors {
+template <typename Error>
+class BaseError : public Error {
+ protected:
+  template <typename... String>
+  explicit BaseError(String&&... str)
+      : Error{createMessage(std::forward<String>(str)...)} {};
+
+ private:
+  template <typename... String>
+  static std::string createMessage(String&&... str) noexcept {
+    std::string result_;
+    result_.reserve((string_size(str) + ...));
+    (result_.append(std::forward<String>(str)), ...);
+    return result_;
+  };
+  template <typename T, size_t N>
+  static constexpr size_t string_size(const T (&)[N]) noexcept {
+    return N - 1;
+  };
+  template <typename T>
+  static constexpr size_t string_size(T&& str) noexcept {
+    return std::size(str);
+  };
+};
+}  // namespace r2d2_errors
+
+namespace r2d2_errors::agent {
+struct RecordNotEmptyError final : public std::runtime_error {
+  explicit RecordNotEmptyError()
       : std::runtime_error("ErrorRecord has errors!") {};
 };
 
@@ -23,7 +50,7 @@ inline std::queue<std::string> errorQueue{};
 }
 inline bool has_errors() noexcept { return !etc::errorQueue.empty(); };
 inline void check() {
-  if (has_errors()) throw RuntimeErrorRecord{};
+  if (has_errors()) throw RecordNotEmptyError{};
 };
 inline void record(const std::exception& e) noexcept {
   etc::errorQueue.emplace(e.what());
@@ -37,36 +64,27 @@ inline void process_errors() noexcept {
     etc::errorQueue.pop();
   }
 };
-}  // namespace r2d2_errors::collector
+}  // namespace r2d2_errors::agent
+
+namespace r2d2_errors::collections {
+struct NameError final : public BaseError<std::out_of_range> {
+  explicit NameError(std::string_view name)
+      : BaseError("Name \"", name, "\" is not found!") {};
+};
+}  // namespace r2d2_errors::collections
 
 namespace r2d2_errors::json {
-class RuntimeError : public std::runtime_error {
- protected:
-  explicit RuntimeError(std::string message)
-      : std::runtime_error(std::move(message)) {};
-
-  static std::string makeMessage(std::string_view prefix, std::string_view item,
-                                 std::string_view suffix) {
-    std::string result;
-    result.reserve(prefix.size() + item.size() + suffix.size());
-    result += prefix;
-    result += item;
-    result += suffix;
-    return result;
-  };
-};
-
-struct FileNotFoundError : public RuntimeError {
+struct FileNotFoundError final : public BaseError<std::runtime_error> {
   explicit FileNotFoundError(std::string_view fileName)
-      : RuntimeError(makeMessage("File \"", fileName, ".json\" not found!")) {};
+      : BaseError("File \"", fileName, ".json\"is not found!") {};
 };
-struct ParseError : public RuntimeError {
-  explicit ParseError(std::string_view key)
-      : RuntimeError(makeMessage("Parameter \"", key, "\" not found!")) {};
+struct ParameterError final : public BaseError<std::runtime_error> {
+  explicit ParameterError(std::string_view key)
+      : BaseError("Parameter \"", key, "\" is not found!") {};
 };
-struct ObjectParseError : public RuntimeError {
+struct ObjectParseError final : public BaseError<std::runtime_error> {
   explicit ObjectParseError(std::string_view key)
-      : RuntimeError(makeMessage("Object \"", key, "\" not found!")) {};
+      : BaseError("Object \"", key, "\" is not found!") {};
 };
 }  // namespace r2d2_errors::json
 #endif  // R2D2_EXCEPTIONS_HPP

@@ -99,8 +99,9 @@ struct jointbase_t {
   T theta{};
   T1 control_word{};
 };
+}  // namespace r2d2_type
 
-namespace callback {
+namespace r2d2_type::callback {
 template <typename T>
 using pipe_t = pipebase_t<T, uint16_t, uint8_t>;
 template <typename T>
@@ -110,9 +111,9 @@ using joint_t = jointbase_t<T, r2d2_commands::ControlType>;
 
 typedef payloadbase_t<int16_t> payload16_t;
 typedef jointbase_t<int16_t, uint16_t> joint16_t;
-}  // namespace callback
+}  // namespace r2d2_type::callback
 
-namespace config {
+namespace r2d2_type::config {
 template <typename T>
 struct payload_t {
   T stiffness{1};
@@ -135,7 +136,6 @@ struct pipe_t {
 };
 template <typename T>
 using nozzle_t = nozzlebase_t<T, T>;
-}  // namespace config
+}  // namespace r2d2_type::config
 
-}  // namespace r2d2_type
 #endif  // R2D2_CONTROL_WORD_HPP

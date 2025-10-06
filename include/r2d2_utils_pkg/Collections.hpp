@@ -3,41 +3,39 @@
 
 #include <algorithm>
 #include <cassert>
-#include <stdexcept>
-#include <string>
-#include <type_traits>
-#include <unordered_map>
 
-template <template <typename> class Vector, template <typename> class Type,
+#include "Exceptions.hpp"
+
+template <template <typename> class Vector, template <typename> class Handler,
           typename T>
 class NamedHandlerVector {
  private:
   template <typename Func, typename... Args>
-  using InvokeResultType = std::invoke_result_t<Func, Type<T>&, Args...>;
+  using InvokeResultType = std::invoke_result_t<Func, Handler<T>&, Args...>;
 
  protected:
-  Vector<Type<T>> m_objectVector;
+  Vector<Handler<T>> m_objectVector;
   std::unordered_map<std::string, size_t> m_indexMap;
 
  public:
-  template <typename Node, typename... Args>
-  NamedHandlerVector(Node* node, Args&&... names) {
+  template <typename Node, typename... String>
+  NamedHandlerVector(Node* node, String&&... names) {
     constexpr size_t size_{sizeof...(names)};
     static_assert(size_ > 0, "At least one name is required!");
-    static_assert((std::is_convertible_v<Args, std::string> && ...),
+    static_assert((std::is_convertible_v<String, std::string> && ...),
                   "All names must be convertible to string!");
     m_objectVector.reserve(size_);
     m_indexMap.reserve(size_);
 
     size_t index_{0};
-    ((m_objectVector.emplace_back(node, std::forward<Args>(names)),
-      m_indexMap.emplace(std::forward<Args>(names), index_++)),
+    ((m_objectVector.emplace_back(node, std::forward<String>(names)),
+      m_indexMap.emplace(std::forward<String>(names), index_++)),
      ...);
   };
-  Type<T>& operator()(const std::string& name) {
-    if (auto it = m_indexMap.find(name); it != m_indexMap.end())
+  Handler<T>& operator()(std::string_view name) {
+    if (auto it = m_indexMap.find(std::string{name}); it != m_indexMap.end())
       return m_objectVector[it->second];
-    throw std::out_of_range("Name \"" + name + "\" not found!");
+    throw r2d2_errors::collections::NameError{name};
   };
 
  public:
