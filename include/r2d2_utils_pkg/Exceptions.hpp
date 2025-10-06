@@ -66,6 +66,13 @@ inline void process_errors() noexcept {
 };
 }  // namespace r2d2_errors::agent
 
+namespace r2d2_errors::collections {
+struct NameError : public BaseError<std::out_of_range> {
+  explicit NameError(std::string_view name)
+      : BaseError("Name \"", name, "\" not found!") {};
+};
+}  // namespace r2d2_errors::collections
+
 namespace r2d2_errors::json {
 struct FileNotFoundError : public BaseError<std::runtime_error> {
   explicit FileNotFoundError(std::string_view fileName)

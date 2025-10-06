@@ -3,7 +3,8 @@
 
 #include <algorithm>
 #include <cassert>
-#include <stdexcept>
+
+#include "Exceptions.hpp"
 
 template <template <typename> class Vector, template <typename> class Type,
           typename T>
@@ -31,10 +32,10 @@ class NamedHandlerVector {
       m_indexMap.emplace(std::forward<Args>(names), index_++)),
      ...);
   };
-  Type<T>& operator()(const std::string& name) {
-    if (auto it = m_indexMap.find(name); it != m_indexMap.end())
+  Type<T>& operator()(std::string_view name) {
+    if (auto it = m_indexMap.find(std::string{name}); it != m_indexMap.end())
       return m_objectVector[it->second];
-    throw std::out_of_range("Name \"" + name + "\" not found!");
+    throw r2d2_errors::collections::NameError{name};
   };
 
  public:
