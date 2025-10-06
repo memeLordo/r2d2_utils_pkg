@@ -34,8 +34,8 @@ class BaseError : public Error {
 }  // namespace r2d2_errors
 
 namespace r2d2_errors::collector {
-struct RuntimeErrorRecord : public std::runtime_error {
-  explicit RuntimeErrorRecord()
+struct RecordNotEmptyError : public std::runtime_error {
+  explicit RecordNotEmptyError()
       : std::runtime_error("ErrorRecord has errors!") {};
 };
 
@@ -44,7 +44,7 @@ inline std::queue<std::string> errorQueue{};
 }
 inline bool has_errors() noexcept { return !etc::errorQueue.empty(); };
 inline void check() {
-  if (has_errors()) throw RuntimeErrorRecord{};
+  if (has_errors()) throw RecordNotEmptyError{};
 };
 inline void record(const std::exception& e) noexcept {
   etc::errorQueue.emplace(e.what());
