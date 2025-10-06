@@ -40,7 +40,7 @@ class BaseError : public Error {
 }  // namespace r2d2_errors
 
 namespace r2d2_errors::agent {
-struct RecordNotEmptyError : public std::runtime_error {
+struct RecordNotEmptyError final : public std::runtime_error {
   explicit RecordNotEmptyError()
       : std::runtime_error("ErrorRecord has errors!") {};
 };
@@ -67,22 +67,22 @@ inline void process_errors() noexcept {
 }  // namespace r2d2_errors::agent
 
 namespace r2d2_errors::collections {
-struct NameError : public BaseError<std::out_of_range> {
+struct NameError final : public BaseError<std::out_of_range> {
   explicit NameError(std::string_view name)
       : BaseError("Name \"", name, "\" is not found!") {};
 };
 }  // namespace r2d2_errors::collections
 
 namespace r2d2_errors::json {
-struct FileNotFoundError : public BaseError<std::runtime_error> {
+struct FileNotFoundError final : public BaseError<std::runtime_error> {
   explicit FileNotFoundError(std::string_view fileName)
       : BaseError("File \"", fileName, ".json\"is not found!") {};
 };
-struct ParameterError : public BaseError<std::runtime_error> {
+struct ParameterError final : public BaseError<std::runtime_error> {
   explicit ParameterError(std::string_view key)
       : BaseError("Parameter \"", key, "\" is not found!") {};
 };
-struct ObjectParseError : public BaseError<std::runtime_error> {
+struct ObjectParseError final : public BaseError<std::runtime_error> {
   explicit ObjectParseError(std::string_view key)
       : BaseError("Object \"", key, "\" is not found!") {};
 };
