@@ -22,11 +22,9 @@ class BaseError : public Error {
 
  private:
   template <typename... String>
-  static std::string createMessage(String&&... str) {
-    size_t totalSize_{(std::size(str) + ...)};
-
+  static std::string createMessage(String&&... str) noexcept {
     std::string result_;
-    result_.reserve(totalSize_);
+    result_.reserve((string_size(str) + ...));
     (result_.append(std::forward<String>(str)), ...);
     return result_;
   };
