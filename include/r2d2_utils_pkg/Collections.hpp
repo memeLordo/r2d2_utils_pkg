@@ -18,18 +18,18 @@ class NamedHandlerVector {
   std::unordered_map<std::string, size_t> m_indexMap;
 
  public:
-  template <typename Node, typename... Args>
-  NamedHandlerVector(Node* node, Args&&... names) {
+  template <typename Node, typename... String>
+  NamedHandlerVector(Node* node, String&&... names) {
     constexpr size_t size_{sizeof...(names)};
     static_assert(size_ > 0, "At least one name is required!");
-    static_assert((std::is_convertible_v<Args, std::string> && ...),
+    static_assert((std::is_convertible_v<String, std::string> && ...),
                   "All names must be convertible to string!");
     m_objectVector.reserve(size_);
     m_indexMap.reserve(size_);
 
     size_t index_{0};
-    ((m_objectVector.emplace_back(node, std::forward<Args>(names)),
-      m_indexMap.emplace(std::forward<Args>(names), index_++)),
+    ((m_objectVector.emplace_back(node, std::forward<String>(names)),
+      m_indexMap.emplace(std::forward<String>(names), index_++)),
      ...);
   };
   Handler<T>& operator()(std::string_view name) {
