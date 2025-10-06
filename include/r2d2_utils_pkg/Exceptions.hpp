@@ -7,10 +7,10 @@
 
 #include "Debug.hpp"
 
-#define CHECK_FOR_ERROR_RECORD() r2d2_errors::collector::check()
-#define RECORD_ERROR(error) r2d2_errors::collector::record(error)
-#define PRINT_ERROR(msg) r2d2_errors::collector::print_error(msg)
-#define PROCESS_ERROR_RECORD() r2d2_errors::collector::process_errors()
+#define CHECK_FOR_ERROR_RECORD() r2d2_errors::agent::check()
+#define RECORD_ERROR(error) r2d2_errors::agent::record(error)
+#define PRINT_ERROR(msg) r2d2_errors::agent::print_error(msg)
+#define PROCESS_ERROR_RECORD() r2d2_errors::agent::process_errors()
 
 namespace r2d2_errors {
 template <typename Error>
@@ -33,7 +33,7 @@ class BaseError : public Error {
 };
 }  // namespace r2d2_errors
 
-namespace r2d2_errors::collector {
+namespace r2d2_errors::agent {
 struct RecordNotEmptyError : public std::runtime_error {
   explicit RecordNotEmptyError()
       : std::runtime_error("ErrorRecord has errors!") {};
@@ -58,7 +58,7 @@ inline void process_errors() noexcept {
     etc::errorQueue.pop();
   }
 };
-}  // namespace r2d2_errors::collector
+}  // namespace r2d2_errors::agent
 
 namespace r2d2_errors::json {
 struct FileNotFoundError : public BaseError<std::runtime_error> {
