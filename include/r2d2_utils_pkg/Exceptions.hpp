@@ -18,7 +18,7 @@ class BaseError : public Error {
  protected:
   template <typename... String>
   explicit BaseError(String&&... str)
-      : Error{createMessage(std::forward<String>(str)...)} {}
+      : Error{createMessage(std::forward<String>(str)...)} {};
 
  private:
   template <typename... String>
@@ -28,9 +28,8 @@ class BaseError : public Error {
     std::string result_;
     result_.reserve(totalSize_);
     (result_.append(std::forward<String>(str)), ...);
-
     return result_;
-  }
+  };
 };
 }  // namespace r2d2_errors
 
