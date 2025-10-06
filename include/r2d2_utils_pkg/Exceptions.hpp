@@ -69,22 +69,22 @@ inline void process_errors() noexcept {
 namespace r2d2_errors::collections {
 struct NameError : public BaseError<std::out_of_range> {
   explicit NameError(std::string_view name)
-      : BaseError("Name \"", name, "\" not found!") {};
+      : BaseError("Name \"", name, "\" is not found!") {};
 };
 }  // namespace r2d2_errors::collections
 
 namespace r2d2_errors::json {
 struct FileNotFoundError : public BaseError<std::runtime_error> {
   explicit FileNotFoundError(std::string_view fileName)
-      : BaseError("File \"", fileName, ".json\" not found!") {};
+      : BaseError("File \"", fileName, ".json\"is not found!") {};
 };
 struct ParameterError : public BaseError<std::runtime_error> {
   explicit ParameterError(std::string_view key)
-      : BaseError("Parameter \"", key, "\" not found!") {};
+      : BaseError("Parameter \"", key, "\" is not found!") {};
 };
 struct ObjectParseError : public BaseError<std::runtime_error> {
   explicit ObjectParseError(std::string_view key)
-      : BaseError("Object \"", key, "\" not found!") {};
+      : BaseError("Object \"", key, "\" is not found!") {};
 };
 }  // namespace r2d2_errors::json
 #endif  // R2D2_EXCEPTIONS_HPP
