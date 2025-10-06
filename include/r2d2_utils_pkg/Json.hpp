@@ -27,7 +27,7 @@ class IJsonConfig {
  public:
   template <typename T = double>
   [[nodiscard]] T getParam(std::string_view key) const {
-    if (!m_json.contains(key)) throw r2d2_errors::json::ParseError{key};
+    if (!m_json.contains(key)) throw r2d2_errors::json::ParameterError{key};
     return m_json.at(std::string(key)).template get<T>();
   }
 };
@@ -47,7 +47,7 @@ template <typename T>
 [[nodiscard]]
 inline T IJsonConfig<true>::getParam(std::string_view key) const {
   try {
-    if (!m_json.contains(key)) throw r2d2_errors::json::ParseError{key};
+    if (!m_json.contains(key)) throw r2d2_errors::json::ParameterError{key};
     return m_json.at(std::string(key)).template get<T>();
   } catch (const std::exception& e) {
     RECORD_ERROR(e);

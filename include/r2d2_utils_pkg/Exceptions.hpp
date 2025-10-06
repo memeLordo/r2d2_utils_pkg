@@ -65,8 +65,8 @@ struct FileNotFoundError : public BaseError<std::runtime_error> {
   explicit FileNotFoundError(std::string_view fileName)
       : BaseError("File \"", fileName, ".json\" not found!") {};
 };
-struct ParseError : public BaseError<std::runtime_error> {
-  explicit ParseError(std::string_view key)
+struct ParameterError : public BaseError<std::runtime_error> {
+  explicit ParameterError(std::string_view key)
       : BaseError("Parameter \"", key, "\" not found!") {};
 };
 struct ObjectParseError : public BaseError<std::runtime_error> {
