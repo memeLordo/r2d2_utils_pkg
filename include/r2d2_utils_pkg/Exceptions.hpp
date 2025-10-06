@@ -30,6 +30,14 @@ class BaseError : public Error {
     (result_.append(std::forward<String>(str)), ...);
     return result_;
   };
+  template <typename T, size_t N>
+  static constexpr size_t string_size(const T (&)[N]) noexcept {
+    return N - 1;
+  };
+  template <typename T>
+  static constexpr size_t string_size(T&& str) noexcept {
+    return std::size(str);
+  };
 };
 }  // namespace r2d2_errors
 
