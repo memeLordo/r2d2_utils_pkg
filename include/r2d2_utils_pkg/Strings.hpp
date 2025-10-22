@@ -1,5 +1,5 @@
-#ifndef R2D2_STRING_HPP
-#define R2D2_STRING_HPP
+#ifndef INCLUDE_R2D2_UTILS_PKG_STRINGS_HPP_
+#define INCLUDE_R2D2_UTILS_PKG_STRINGS_HPP_
 
 #include <algorithm>
 #include <cassert>
@@ -35,4 +35,4 @@ inline std::string lower(std::string_view sv, size_t from = 0,
 };
 }  // namespace r2d2_string
 
-#endif  // R2D2_STRING_HPP
+#endif  // INCLUDE_R2D2_UTILS_PKG_STRINGS_HPP_

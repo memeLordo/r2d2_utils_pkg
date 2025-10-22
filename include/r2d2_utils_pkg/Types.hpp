@@ -1,5 +1,5 @@
-#ifndef R2D2_CONTROL_WORD_HPP
-#define R2D2_CONTROL_WORD_HPP
+#ifndef INCLUDE_R2D2_UTILS_PKG_TYPES_HPP_
+#define INCLUDE_R2D2_UTILS_PKG_TYPES_HPP_
 
 #include <cstdint>
 #include <string>
@@ -138,4 +138,4 @@ template <typename T>
 using nozzle_t = nozzlebase_t<T, T>;
 }  // namespace r2d2_type::config
 
-#endif  // R2D2_CONTROL_WORD_HPP
+#endif  // INCLUDE_R2D2_UTILS_PKG_TYPES_HPP_

@@ -1,5 +1,5 @@
-#ifndef R2D2_MATH_HPP
-#define R2D2_MATH_HPP
+#ifndef INCLUDE_R2D2_UTILS_PKG_MATH_HPP_
+#define INCLUDE_R2D2_UTILS_PKG_MATH_HPP_
 
 #include <algorithm>
 #include <cassert>
@@ -73,4 +73,4 @@ using Angle = Wrapper<config::g_angleRatio>;
 using Force = Wrapper<config::g_forceRatio>;
 }  // namespace r2d2_process
 
-#endif  // R2D2_MATH_HPP
+#endif  // INCLUDE_R2D2_UTILS_PKG_MATH_HPP_
