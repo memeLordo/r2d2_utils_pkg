@@ -1,5 +1,5 @@
-#ifndef R2D2_COLLECTIONS_HPP
-#define R2D2_COLLECTIONS_HPP
+#ifndef INCLUDE_R2D2_UTILS_PKG_COLLECTIONS_HPP_
+#define INCLUDE_R2D2_UTILS_PKG_COLLECTIONS_HPP_
 
 #include <algorithm>
 #include <cassert>
@@ -60,4 +60,4 @@ class NamedHandlerVector {
   auto cbegin() const { return m_objectVector.cbegin(); };
   auto cend() const { return m_objectVector.cend(); };
 };
-#endif  // R2D2_COLLECTIONS_HPP
+#endif  // INCLUDE_R2D2_UTILS_PKG_COLLECTIONS_HPP_

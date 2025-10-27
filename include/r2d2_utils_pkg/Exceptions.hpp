@@ -1,5 +1,5 @@
-#ifndef R2D2_EXCEPTIONS_HPP
-#define R2D2_EXCEPTIONS_HPP
+#ifndef INCLUDE_R2D2_UTILS_PKG_EXCEPTIONS_HPP_
+#define INCLUDE_R2D2_UTILS_PKG_EXCEPTIONS_HPP_
 
 #include <exception>
 #include <iostream>
@@ -87,4 +87,4 @@ struct ObjectParseError final : public BaseError<std::runtime_error> {
       : BaseError("Object \"", key, "\" is not found!") {};
 };
 }  // namespace r2d2_errors::json
-#endif  // R2D2_EXCEPTIONS_HPP
+#endif  // INCLUDE_R2D2_UTILS_PKG_EXCEPTIONS_HPP_

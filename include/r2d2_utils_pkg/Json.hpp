@@ -1,5 +1,5 @@
-#ifndef R2D2_CONFIG_JSON_HPP
-#define R2D2_CONFIG_JSON_HPP
+#ifndef INCLUDE_R2D2_UTILS_PKG_JSON_HPP_
+#define INCLUDE_R2D2_UTILS_PKG_JSON_HPP_
 
 #include <fstream>
 #include <nlohmann/json.hpp>
@@ -70,4 +70,4 @@ class IJsonConfigMap : public IJsonConfig<> {
     throw r2d2_errors::json::ObjectParseError{key};
   };
 };
-#endif  // R2D2_CONFIG_JSON_HPP
+#endif  // INCLUDE_R2D2_UTILS_PKG_JSON_HPP_

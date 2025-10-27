@@ -1,5 +1,5 @@
-#ifndef R2D2_CONTROL_WORD_HPP
-#define R2D2_CONTROL_WORD_HPP
+#ifndef INCLUDE_R2D2_UTILS_PKG_TYPES_HPP_
+#define INCLUDE_R2D2_UTILS_PKG_TYPES_HPP_
 
 #include <cstdint>
 #include <string>
@@ -15,9 +15,8 @@ enum class ControlType : uint16_t {
 }  // namespace r2d2_commands
 
 namespace r2d2_state {
-enum class WorkMode : uint8_t { NONE = 0, MANUAL, AUTO, STOP = 0x80 };
-enum class LockStatus : uint8_t { NONE = 0, LOCKED, UNLOCKED };
-enum class NozzleType : uint8_t { NONE = 0, BRUSH, EMA };
+enum class WorkMode : uint8_t { NONE = 0, SETUP, AUTO, STOP = 0x80 };
+enum class NozzleType : uint8_t { NONE = 0, EMA, BRUSH };
 
 template <typename E>
 struct EnumPair {
@@ -33,26 +32,14 @@ struct EnumPair {
 };
 
 typedef EnumPair<WorkMode> WorkModePair;
-typedef EnumPair<LockStatus> LockStatusPair;
 typedef EnumPair<NozzleType> NozzleTypePair;
 
 template <>
 inline void WorkModePair::updateKey() {
   switch (type) {
+    case WorkMode::SETUP:
     case WorkMode::AUTO:
-    case WorkMode::MANUAL:
     case WorkMode::STOP:
-      key = "none";
-      break;
-    default:
-      key = "";
-  }
-};
-template <>
-inline void LockStatusPair::updateKey() {
-  switch (type) {
-    case LockStatus::LOCKED:
-    case LockStatus::UNLOCKED:
       key = "none";
       break;
     default:
@@ -138,4 +125,4 @@ template <typename T>
 using nozzle_t = nozzlebase_t<T, T>;
 }  // namespace r2d2_type::config
 
-#endif  // R2D2_CONTROL_WORD_HPP
+#endif  // INCLUDE_R2D2_UTILS_PKG_TYPES_HPP_

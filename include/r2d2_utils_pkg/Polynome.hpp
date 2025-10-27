@@ -1,5 +1,5 @@
-#ifndef R2D2_POLYNOME_HPP
-#define R2D2_POLYNOME_HPP
+#ifndef INCLUDE_R2D2_UTILS_PKG_POLYNOME_HPP_
+#define INCLUDE_R2D2_UTILS_PKG_POLYNOME_HPP_
 
 #include <iterator>
 #include <numeric>
@@ -15,4 +15,4 @@ template <template <typename> class Container, typename T>
       [&](const T& acc, const T& coeff) { return acc * x + coeff; });
 };
 }  // namespace horner
-#endif  // R2D2_POLYNOME_HPP
+#endif  // INCLUDE_R2D2_UTILS_PKG_POLYNOME_HPP_
