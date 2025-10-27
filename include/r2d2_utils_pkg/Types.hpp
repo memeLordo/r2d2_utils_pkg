@@ -15,9 +15,9 @@ enum class ControlType : uint16_t {
 }  // namespace r2d2_commands
 
 namespace r2d2_state {
-enum class WorkMode : uint8_t { NONE = 0, MANUAL, AUTO, STOP = 0x80 };
 enum class LockStatus : uint8_t { NONE = 0, LOCKED, UNLOCKED };
-enum class NozzleType : uint8_t { NONE = 0, BRUSH, EMA };
+enum class WorkMode : uint8_t { NONE = 0, SETUP, AUTO, STOP = 0x80 };
+enum class NozzleType : uint8_t { NONE = 0, EMA, BRUSH };
 
 template <typename E>
 struct EnumPair {
@@ -39,8 +39,8 @@ typedef EnumPair<NozzleType> NozzleTypePair;
 template <>
 inline void WorkModePair::updateKey() {
   switch (type) {
+    case WorkMode::SETUP:
     case WorkMode::AUTO:
-    case WorkMode::MANUAL:
     case WorkMode::STOP:
       key = "none";
       break;
