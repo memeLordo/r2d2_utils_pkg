@@ -3,6 +3,7 @@
 
 // ANSI color definitions
 #include <algorithm>
+#include <iterator>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -37,27 +38,24 @@
 //                      [](char c) { return std::isalnum(c) || c == '_'; });
 // }
 
-// TODO: make divider with condition
 template <typename T>
 inline constexpr void debug_print_single(std::ostringstream& oss,
                                          std::string_view name, T&& value) {
   oss << YELLOW(name << "=" << std::forward<T>(value)) << " ";
 }
 
-// TODO: make constexpr
-inline std::vector<std::string> parse_names(std::string& names_str) {
-  std::replace(names_str.begin(), names_str.end(), ',', ' ');
-  std::istringstream iss(names_str);
-  std::vector<std::string> names_;  // TODO: calculate size
-  std::string name_;
-  while (iss >> name_) names_.emplace_back(name_);
-  return names_;
+inline std::vector<std::string> parse_var_str(std::string& var_str) {
+  std::replace(var_str.begin(), var_str.end(), ',', ' ');
+  std::istringstream iss(var_str);
+
+  return std::vector<std::string>(std::istream_iterator<std::string>(iss),
+                                  std::istream_iterator<std::string>());
 }
 
 template <typename T, typename... Args>
 inline void debug_print_agrs(std::ostringstream& oss, std::string& var_str,
                              Args&&... var_args) {
-  auto var_names_{parse_names(var_str)};
+  auto var_names_{parse_var_str(var_str)};
   size_t idx{0};
   (debug_print_single(oss, var_names_[idx++], std::forward<T>(var_args)), ...);
 }
