@@ -39,8 +39,9 @@ inline auto parse_var_str(std::string_view var_str) {
 
 template <typename T>
 inline void stream_var(std::ostringstream& oss, std::string_view var_name,
-                       T&& var_arg) {
-  oss << YELLOW(var_name << "=" << std::forward<T>(var_arg)) << " ";
+                       T&& var_arg, std::size_t idx, std::size_t sz) {
+  oss << YELLOW(var_name << "=" << std::forward<T>(var_arg));
+  if (idx + 1 < sz) oss << ", ";
 }
 
 template <typename... Args>
@@ -48,7 +49,10 @@ inline void stream_vars(std::ostringstream& oss, std::string_view var_str,
                         Args&&... var_args) {
   auto var_names_{parse_var_str(var_str)};
   std::size_t idx{0};
-  (stream_var(oss, var_names_[idx++], std::forward<Args>(var_args)), ...);
+  constexpr std::size_t sz{sizeof...(var_args)};
+  ((stream_var(oss, var_names_[idx], std::forward<Args>(var_args), idx, sz),
+    idx++),
+   ...);
 }
 
 template <typename... Args>
