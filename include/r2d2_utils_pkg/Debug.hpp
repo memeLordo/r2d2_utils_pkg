@@ -38,21 +38,25 @@ inline auto parse_var_str(std::string_view var_str) {
 }
 
 template <typename T>
-inline void stream_var(std::ostringstream& oss, std::string_view var_name,
-                       T&& var_arg, std::size_t idx, std::size_t sz) {
+inline std::ostringstream& stream_var(std::ostringstream& oss,
+                                      std::string_view var_name, T&& var_arg,
+                                      std::size_t idx, std::size_t sz) {
   oss << YELLOW(var_name << "=" << std::forward<T>(var_arg));
   if (idx + 1 < sz) oss << ", ";
+  return oss;
 }
 
 template <typename... Args>
-inline void stream_vars(std::ostringstream& oss, std::string_view var_str,
-                        Args&&... var_args) {
+inline std::ostringstream& stream_vars(std::ostringstream& oss,
+                                       std::string_view var_str,
+                                       Args&&... var_args) {
   auto var_names_{parse_var_str(var_str)};
   std::size_t idx{0};
   constexpr std::size_t sz{sizeof...(var_args)};
   ((stream_var(oss, var_names_[idx], std::forward<Args>(var_args), idx, sz),
     idx++),
    ...);
+  return oss;
 }
 
 template <typename... Args>
@@ -60,8 +64,7 @@ inline auto stream_args(std::string_view label, std::string_view names,
                         Args&&... args) {
   std::ostringstream oss;
   if (!label.empty()) oss << "[" << MAGENTA(label) << "] : ";
-  stream_vars(oss, names, std::forward<Args>(args)...);
-  return oss.str();
+  return stream_vars(oss, names, std::forward<Args>(args)...).str();
 }
 
 #define STREAM_VARS(label, ...) stream_args(label, #__VA_ARGS__, __VA_ARGS__)
