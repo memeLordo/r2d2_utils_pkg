@@ -26,18 +26,6 @@
 #define CYAN(x) ANSI_COLOR_CYAN << x << ANSI_COLOR_RESET
 #define WHITE(x) ANSI_COLOR_WHITE << x << ANSI_COLOR_RESET
 
-// inline std::string prettyName(const std::string& prettyFunction) {
-//   return prettyFunction.substr();
-// }
-// #define __FUNC_NAME__ prettyName(__PRETTY_FUNCTION__)
-
-// Вспомогательная печать одной пары имя-значение
-// inline constexpr bool is_valid_str(std::string_view name) {
-//   if (name.empty() || !std::isalpha(name[0]) || name[0] == '_') return false;
-//   return std::all_of(std::next(name.begin()), name.end(),
-//                      [](char c) { return std::isalnum(c) || c == '_'; });
-// }
-
 [[nodiscard]]
 inline std::vector<std::string> parse_var_str(std::string_view var_str) {
   std::string tmp_{var_str};
@@ -70,59 +58,6 @@ inline std::ostringstream stream_args(std::string_view label,
   return oss;
 }
 
-// // Non-void return type version
-// template <typename Func, typename OutFunc, typename... Args>
-// inline auto log_func(const std::string func_name, Func func, OutFunc outfunc,
-//                      const std::string names, Args&&... args) ->
-//     typename std::enable_if<
-//         !std::is_void<typename std::result_of<Func(Args&&...)>::type>::value,
-//         typename std::result_of<Func(Args&&...)>::type>::type {
-//   std::ostringstream oss;
-//   auto result_ = func(std::forward<Args>(args)...);
-//
-//   oss << "[" << MAGENTA(func_name) << "](";
-//   debug_print_args(oss, names, args...);
-//   oss << ") : " << WHITE(result_);
-//   outfunc(oss.str());
-//
-//   return result_;
-// }
-
-// // Void return type version
-// template <typename Func, typename OutFunc, typename... Args>
-// inline typename std::enable_if<
-//     std::is_void<typename std::result_of<Func(Args&&...)>::type>::value,
-//     void>::type
-// log_func(const std::string func_name, Func func, OutFunc outfunc,
-//          const std::string names, Args&&... args) {
-//   std::ostringstream oss;
-//   oss << "[" << MAGENTA(func_name) << "](";
-//   debug_print_args(oss, names, args...);
-//   oss << ") : " << WHITE("(void)");
-//   outfunc(oss.str());
-// }
-
 #define STREAM_VARS(label, ...) stream_args(label, #__VA_ARGS__, __VA_ARGS__)
-
-// #define LOG_FUNC_(func, outfunc, ...) \
-//   log_func( \
-//       #func, \
-//       [&](auto &&...args) -> decltype(auto) { \
-//         return func(std::forward<decltype(args)>(args)...); \
-//       }, \ outfunc, #__VA_ARGS__, __VA_ARGS__)
-// #define LOG_CLASS_FUNC_(func, outfunc, ...) \
-//   log_func( \
-//       __FUNC_NAME__ + "->" #func, \
-//       [&](auto &&...args) -> decltype(auto) { \
-//         return func(std::forward<decltype(args)>(args)...); \
-//       }, \ outfunc, #__VA_ARGS__, __VA_ARGS__)
-// #define LOG_FUNC(func, ...)                                                \
-//   LOG_FUNC_(                                                               \
-//       func, [](const std::string& msg) { std::cout << msg << std::endl; }, \
-//       __VA_ARGS__)
-// #define LOG_CLASS_FUNC(func, ...)                                          \
-//   LOG_CLASS_FUNC_(                                                         \
-//       func, [](const std::string& msg) { std::cout << msg << std::endl; }, \
-//       __VA_ARGS__)
 
 #endif  // INCLUDE_R2D2_UTILS_PKG_DEBUG_HPP_
