@@ -47,13 +47,13 @@ inline std::vector<std::string> parse_var_str(std::string& var_str) {
 }
 
 template <typename T>
-inline constexpr void stream_var(std::ostringstream& oss, std::string_view name,
-                                 T&& value) {
-  oss << YELLOW(name << "=" << std::forward<T>(value)) << " ";
+inline constexpr void stream_var(std::ostringstream& oss,
+                                 std::string_view var_name, T&& var_arg) {
+  oss << YELLOW(var_name << "=" << std::forward<T>(var_arg)) << " ";
 }
 
 template <typename... Args>
-inline void stream_args(std::ostringstream& oss, std::string& var_str,
+inline void stream_vars(std::ostringstream& oss, std::string& var_str,
                         Args&&... var_args) {
   auto var_names_{parse_var_str(var_str)};
   size_t idx{0};
