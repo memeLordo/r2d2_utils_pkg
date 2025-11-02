@@ -31,7 +31,7 @@
 // #define __FUNC_NAME__ prettyName(__PRETTY_FUNCTION__)
 
 // Вспомогательная печать одной пары имя-значение
-inline bool is_valid_var_name(const std::string& name) {
+inline constexpr bool is_valid_var_name(std::string_view name) {
   if (name.empty()) return false;
   if (!(std::isalpha(name[0]) || name[0] == '_')) return false;
   return std::all_of(name.begin() + 1, name.end(),
@@ -40,12 +40,11 @@ inline bool is_valid_var_name(const std::string& name) {
 
 // TODO: make divider with condition
 template <typename T>
-inline void debug_print_single(std::ostringstream& oss, const std::string& name,
-                               T&& value) {
-  if (is_valid_var_name(name))
-    oss << YELLOW(name << "=" << std::forward<T>(value));
-  else
-    oss << YELLOW(std::forward<T>(value));
+inline constexpr void debug_print_single(std::ostringstream& oss,
+                                         std::string_view name, T&& value) {
+  oss << YELLOW((is_valid_str(name) ? name : "###")
+                << "=" << std::forward<T>(value))
+      << " ";
 }
 
 // TODO: make constexpr
@@ -60,17 +59,11 @@ inline std::vector<std::string> parse_names(const std::string& names_str) {
 
 template <typename T, typename... Args>
 inline void debug_print_agrs(std::ostringstream& oss,
-                             const std::string& names_str, Args&&... args) {
-  auto names_{parse_names(names_str)};
+                             const std::string& var_names, Args&&... var_args) {
+  auto names_{parse_names(var_names)};
   size_t idx{0};
-  // (debug_print_single(oss, names[idx++], std::forward<T>(value)), ...);
+  (debug_print_single(oss, names_[idx++], std::forward<T>(var_args)), ...);
 }
-
-// template <typename... Args>
-// inline void debug_print_args(std::ostringstream& oss,
-//                              const std::string& names_str, Args&&... args) {
-//   debug_print_impl(oss, parse_names(names_str), std::forward<Args>(args)...);
-// }
 
 template <typename LogFunc, typename... Args>
 inline void log_vars(std::string_view func_name, LogFunc outfunc,
