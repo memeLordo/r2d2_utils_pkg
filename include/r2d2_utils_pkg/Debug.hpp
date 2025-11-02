@@ -39,31 +39,31 @@
 // }
 
 [[nodiscard]]
-inline std::vector<std::string> parse_var_str(std::string& var_str) {
-  std::replace(var_str.begin(), var_str.end(), ',', ' ');
-  std::istringstream iss(var_str);
-
+inline std::vector<std::string> parse_var_str(std::string_view var_str) {
+  std::string tmp_{var_str};
+  std::replace(tmp_.begin(), tmp_.end(), ',', ' ');
+  std::istringstream iss(tmp_);
   return std::vector<std::string>(std::istream_iterator<std::string>(iss),
                                   std::istream_iterator<std::string>());
 }
 
 template <typename T>
-inline constexpr void stream_var(std::ostringstream& oss,
-                                 std::string_view var_name, T&& var_arg) {
+inline void stream_var(std::ostringstream& oss, std::string_view var_name,
+                       T&& var_arg) {
   oss << YELLOW(var_name << "=" << std::forward<T>(var_arg)) << " ";
 }
 
 template <typename... Args>
-inline void stream_vars(std::ostringstream& oss, std::string& var_str,
+inline void stream_vars(std::ostringstream& oss, std::string_view var_str,
                         Args&&... var_args) {
   auto var_names_{parse_var_str(var_str)};
-  size_t idx{0};
+  std::size_t idx{0};
   (stream_var(oss, var_names_[idx++], std::forward<Args>(var_args)), ...);
 }
 
 template <typename... Args>
 inline std::ostringstream stream_args(std::string_view label,
-                                      std::string& names, Args&&... args) {
+                                      std::string_view names, Args&&... args) {
   std::ostringstream oss;
   if (!label.empty()) oss << "[" << MAGENTA(label) << "] : ";
   stream_vars(oss, names, std::forward<Args>(args)...);
