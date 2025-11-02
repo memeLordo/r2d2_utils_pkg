@@ -109,10 +109,15 @@ inline void log_vars(std::string_view func_name, LogFunc logfunc,
   LOG_VAR_(                                                            \
       , [](const std::string& msg) { std::cout << msg << std::endl; }, \
       __VA_ARGS__)
-#define LOG_CLASS_VAR(...)                                           \
+#define LOG_PRETTY_VAR(...)                                          \
   LOG_VAR_(                                                          \
       __PRETTY_FUNCTION__,                                           \
       [](const std::string& msg) { std::cout << msg << std::endl; }, \
+      __VA_ARGS__)
+
+#define LOG_NAMED_VAR(label, ...)                                           \
+  LOG_VAR_(                                                                 \
+      label, [](const std::string& msg) { std::cout << msg << std::endl; }, \
       __VA_ARGS__)
 
 // #define LOG_FUNC_(func, outfunc, ...) \
