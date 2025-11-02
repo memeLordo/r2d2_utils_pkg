@@ -25,10 +25,10 @@
 #define CYAN(x) ANSI_COLOR_CYAN << x << ANSI_COLOR_RESET
 #define WHITE(x) ANSI_COLOR_WHITE << x << ANSI_COLOR_RESET
 
-inline std::string prettyName(const std::string& prettyFunction) {
-  return prettyFunction.substr();
-}
-#define __FUNC_NAME__ prettyName(__PRETTY_FUNCTION__)
+// inline std::string prettyName(const std::string& prettyFunction) {
+//   return prettyFunction.substr();
+// }
+// #define __FUNC_NAME__ prettyName(__PRETTY_FUNCTION__)
 
 // Вспомогательная печать одной пары имя-значение
 inline bool is_valid_var_name(const std::string& name) {
@@ -119,7 +119,7 @@ inline void log_vars(std::string_view func_name, LogFunc outfunc,
       __VA_ARGS__)
 #define LOG_CLASS_VAR(...)                                           \
   LOG_VAR_(                                                          \
-      __FUNC_NAME__,                                                 \
+      __PRETTY_FUNCTION__,                                           \
       [](const std::string& msg) { std::cout << msg << std::endl; }, \
       __VA_ARGS__)
 //
