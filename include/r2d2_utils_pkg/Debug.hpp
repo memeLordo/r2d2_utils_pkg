@@ -45,7 +45,7 @@ inline constexpr void debug_print_single(std::ostringstream& oss,
 }
 
 // TODO: make constexpr
-inline std::vector<std::string> parse_names(const std::string& names_str) {
+inline std::vector<std::string> parse_names(std::string& names_str) {
   std::replace(names_str.begin(), names_str.end(), ',', ' ');
   std::istringstream iss(names_str);
   std::vector<std::string> names_;  // TODO: calculate size
@@ -55,8 +55,8 @@ inline std::vector<std::string> parse_names(const std::string& names_str) {
 }
 
 template <typename T, typename... Args>
-inline void debug_print_agrs(std::ostringstream& oss,
-                             const std::string& var_str, Args&&... var_args) {
+inline void debug_print_agrs(std::ostringstream& oss, std::string& var_str,
+                             Args&&... var_args) {
   auto var_names_{parse_names(var_str)};
   size_t idx{0};
   (debug_print_single(oss, var_names_[idx++], std::forward<T>(var_args)), ...);
