@@ -3,6 +3,7 @@
 
 // ANSI color definitions
 #include <algorithm>
+#include <iterator>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -32,9 +33,8 @@
 
 // Вспомогательная печать одной пары имя-значение
 inline constexpr bool is_valid_str(std::string_view name) {
-  if (name.empty()) return false;
-  if (!(std::isalpha(name[0]) || name[0] == '_')) return false;
-  return std::all_of(name.begin() + 1, name.end(),
+  if (name.empty() || !std::isalpha(name[0]) || name[0] == '_') return false;
+  return std::all_of(std::next(name.begin()), name.end(),
                      [](char c) { return std::isalnum(c) || c == '_'; });
 }
 
@@ -69,10 +69,11 @@ template <typename LogFunc, typename... Args>
 inline void log_vars(std::string_view func_name, LogFunc outfunc,
                      std::string_view names, Args&&... args) {
   std::ostringstream oss;
-  if (func_name != "") oss << "[" << MAGENTA(func_name) << "] : ";
+  if (!func_name.empty()) oss << "[" << MAGENTA(func_name) << "] : ";
   debug_print_args(oss, names, args...);
   outfunc(oss.str());
 }
+
 // // Non-void return type version
 // template <typename Func, typename OutFunc, typename... Args>
 // inline auto log_func(const std::string func_name, Func func, OutFunc outfunc,
@@ -116,7 +117,7 @@ inline void log_vars(std::string_view func_name, LogFunc outfunc,
       __PRETTY_FUNCTION__,                                           \
       [](const std::string& msg) { std::cout << msg << std::endl; }, \
       __VA_ARGS__)
-//
+
 // #define LOG_FUNC_(func, outfunc, ...) \
 //   log_func( \
 //       #func, \
