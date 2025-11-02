@@ -65,11 +65,11 @@ inline std::vector<std::string> parse_names(const std::string& names_str) {
   return names_;
 }
 
-template <typename... Args>
-inline void debug_print_args(std::ostringstream& oss,
-                             const std::string& names_str, Args&&... args) {
-  debug_print_impl(oss, parse_names(names_str), std::forward<Args>(args)...);
-}
+// template <typename... Args>
+// inline void debug_print_args(std::ostringstream& oss,
+//                              const std::string& names_str, Args&&... args) {
+//   debug_print_impl(oss, parse_names(names_str), std::forward<Args>(args)...);
+// }
 
 template <typename LogFunc, typename... Args>
 inline void log_vars(std::string_view func_name, LogFunc outfunc,
