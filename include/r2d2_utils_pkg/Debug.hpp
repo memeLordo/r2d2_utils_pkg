@@ -49,14 +49,14 @@ inline void debug_print_single(std::ostringstream& oss, const std::string& name,
 }
 
 template <typename T, typename... Args>
-inline void debug_print_impl(std::ostringstream& oss,
-                             const std::vector<std::string>& names,
-                             Args&&... args) {
+inline void debug_print_impl(std::ostringstream& oss, Args&&... args) {
+  auto names_{parse_names(names_str)}
+
   size_t idx{0};
   // (debug_print_single(oss, names[idx++], std::forward<T>(value)), ...);
 }
 
-inline std::vector<std::string> parse_names(std::string& names_str) {
+inline std::vector<std::string> parse_names(const std::string& names_str) {
   std::replace(names_str.begin(), names_str.end(), ',', ' ');
   std::istringstream iss(names_str);
   std::vector<std::string> names_;
@@ -66,8 +66,8 @@ inline std::vector<std::string> parse_names(std::string& names_str) {
 }
 
 template <typename... Args>
-inline void debug_print_args(std::ostringstream& oss, std::string names_str,
-                             Args&&... args) {
+inline void debug_print_args(std::ostringstream& oss,
+                             const std::string& names_str, Args&&... args) {
   debug_print_impl(oss, parse_names(names_str), std::forward<Args>(args)...);
 }
 
