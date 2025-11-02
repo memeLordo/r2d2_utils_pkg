@@ -38,7 +38,7 @@ inline bool is_valid_var_name(const std::string& name) {
                      [](char c) { return std::isalnum(c) || c == '_'; });
 }
 
-// Вспомогательная печать одной пары имя-значение
+// TODO: make divider with condition
 template <typename T>
 inline void debug_print_single(std::ostringstream& oss, const std::string& name,
                                T&& value) {
@@ -48,10 +48,11 @@ inline void debug_print_single(std::ostringstream& oss, const std::string& name,
     oss << YELLOW(std::forward<T>(value));
 }
 
+// TODO: make constexpr
 inline std::vector<std::string> parse_names(const std::string& names_str) {
   std::replace(names_str.begin(), names_str.end(), ',', ' ');
   std::istringstream iss(names_str);
-  std::vector<std::string> names_;
+  std::vector<std::string> names_;  // TODO: calculate size
   std::string name_;
   while (iss >> name_) names_.emplace_back(name_);
   return names_;
