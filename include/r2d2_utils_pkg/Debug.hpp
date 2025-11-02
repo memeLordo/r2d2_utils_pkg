@@ -102,22 +102,7 @@ inline std::ostringstream stream_args(std::string_view label,
 //   outfunc(oss.str());
 // }
 
-#define LOG_VAR_(label, logfunc, ...) \
-  log_vars(label, logfunc, #__VA_ARGS__, __VA_ARGS__)
-#define LOG_VAR(...)                                                   \
-  LOG_VAR_(                                                            \
-      , [](const std::string& msg) { std::cout << msg << std::endl; }, \
-      __VA_ARGS__)
-#define LOG_PRETTY_VAR(...)                                          \
-  LOG_VAR_(                                                          \
-      __PRETTY_FUNCTION__,                                           \
-      [](const std::string& msg) { std::cout << msg << std::endl; }, \
-      __VA_ARGS__)
-
-#define LOG_NAMED_VAR(label, ...)                                           \
-  LOG_VAR_(                                                                 \
-      label, [](const std::string& msg) { std::cout << msg << std::endl; }, \
-      __VA_ARGS__)
+#define STREAM_VARS(label, ...) stream_args(label, #__VA_ARGS__, __VA_ARGS__)
 
 // #define LOG_FUNC_(func, outfunc, ...) \
 //   log_func( \
