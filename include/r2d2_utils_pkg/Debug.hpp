@@ -3,7 +3,6 @@
 
 // ANSI color definitions
 #include <algorithm>
-#include <iterator>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -32,19 +31,17 @@
 // #define __FUNC_NAME__ prettyName(__PRETTY_FUNCTION__)
 
 // Вспомогательная печать одной пары имя-значение
-inline constexpr bool is_valid_str(std::string_view name) {
-  if (name.empty() || !std::isalpha(name[0]) || name[0] == '_') return false;
-  return std::all_of(std::next(name.begin()), name.end(),
-                     [](char c) { return std::isalnum(c) || c == '_'; });
-}
+// inline constexpr bool is_valid_str(std::string_view name) {
+//   if (name.empty() || !std::isalpha(name[0]) || name[0] == '_') return false;
+//   return std::all_of(std::next(name.begin()), name.end(),
+//                      [](char c) { return std::isalnum(c) || c == '_'; });
+// }
 
 // TODO: make divider with condition
 template <typename T>
 inline constexpr void debug_print_single(std::ostringstream& oss,
                                          std::string_view name, T&& value) {
-  oss << YELLOW((is_valid_str(name) ? name : "###")
-                << "=" << std::forward<T>(value))
-      << " ";
+  oss << YELLOW(name << "=" << std::forward<T>(value)) << " ";
 }
 
 // TODO: make constexpr
