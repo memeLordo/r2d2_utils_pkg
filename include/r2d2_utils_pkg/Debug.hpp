@@ -61,10 +61,10 @@ inline void stream_args(std::ostringstream& oss, std::string& var_str,
 }
 
 template <typename LogFunc, typename... Args>
-inline void log_vars(std::string_view func_name, LogFunc logfunc,
+inline void log_args(std::string_view label, LogFunc logfunc,
                      std::string_view names, Args&&... args) {
   std::ostringstream oss;
-  if (!func_name.empty()) oss << "[" << MAGENTA(func_name) << "] : ";
+  if (!label.empty()) oss << "[" << MAGENTA(label) << "] : ";
   stream_args(oss, names, std::forward<Args>(args)...);
   logfunc(oss.str());
 }
