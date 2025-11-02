@@ -39,8 +39,8 @@
 // }
 
 template <typename T>
-inline constexpr void debug_print_single(std::ostringstream& oss,
-                                         std::string_view name, T&& value) {
+inline constexpr void stream_var(std::ostringstream& oss, std::string_view name,
+                                 T&& value) {
   oss << YELLOW(name << "=" << std::forward<T>(value)) << " ";
 }
 
@@ -53,11 +53,11 @@ inline std::vector<std::string> parse_var_str(std::string& var_str) {
 }
 
 template <typename T, typename... Args>
-inline void debug_print_agrs(std::ostringstream& oss, std::string& var_str,
-                             Args&&... var_args) {
+inline void stream_args(std::ostringstream& oss, std::string& var_str,
+                        Args&&... var_args) {
   auto var_names_{parse_var_str(var_str)};
   size_t idx{0};
-  (debug_print_single(oss, var_names_[idx++], std::forward<T>(var_args)), ...);
+  (stream_var(oss, var_names_[idx++], std::forward<T>(var_args)), ...);
 }
 
 template <typename LogFunc, typename... Args>
@@ -65,7 +65,7 @@ inline void log_vars(std::string_view func_name, LogFunc logfunc,
                      std::string_view names, Args&&... args) {
   std::ostringstream oss;
   if (!func_name.empty()) oss << "[" << MAGENTA(func_name) << "] : ";
-  debug_print_args(oss, names, args...);
+  stream_args(oss, names, args...);
   logfunc(oss.str());
 }
 
