@@ -111,17 +111,17 @@ inline void log_vars(const std::string func_name, OutFunc outfunc,
 //   outfunc(oss.str());
 // }
 
-// #define LOG_VAR_(func_name, outfunc, ...) \
-//   log_vars(func_name, outfunc, #__VA_ARGS__, __VA_ARGS__)
-// #define LOG_VAR(...)                                                   \
-//   LOG_VAR_(                                                            \
-//       , [](const std::string& msg) { std::cout << msg << std::endl; }, \
-//       __VA_ARGS__)
-// #define LOG_CLASS_VAR(...)                                           \
-//   LOG_VAR_(                                                          \
-//       __FUNC_NAME__,                                                 \
-//       [](const std::string& msg) { std::cout << msg << std::endl; }, \
-//       __VA_ARGS__)
+#define LOG_VAR_(func_name, logfunc, ...) \
+  log_vars(func_name, logfunc, #__VA_ARGS__, __VA_ARGS__)
+#define LOG_VAR(...)                                                   \
+  LOG_VAR_(                                                            \
+      , [](const std::string& msg) { std::cout << msg << std::endl; }, \
+      __VA_ARGS__)
+#define LOG_CLASS_VAR(...)                                           \
+  LOG_VAR_(                                                          \
+      __FUNC_NAME__,                                                 \
+      [](const std::string& msg) { std::cout << msg << std::endl; }, \
+      __VA_ARGS__)
 //
 // #define LOG_FUNC_(func, outfunc, ...) \
 //   log_func( \
