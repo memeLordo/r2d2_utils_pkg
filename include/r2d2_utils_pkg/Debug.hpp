@@ -38,12 +38,6 @@
 //                      [](char c) { return std::isalnum(c) || c == '_'; });
 // }
 
-template <typename T>
-inline constexpr void stream_var(std::ostringstream& oss, std::string_view name,
-                                 T&& value) {
-  oss << YELLOW(name << "=" << std::forward<T>(value)) << " ";
-}
-
 inline std::vector<std::string> parse_var_str(std::string& var_str) {
   std::replace(var_str.begin(), var_str.end(), ',', ' ');
   std::istringstream iss(var_str);
@@ -52,7 +46,13 @@ inline std::vector<std::string> parse_var_str(std::string& var_str) {
                                   std::istream_iterator<std::string>());
 }
 
-template <typename T, typename... Args>
+template <typename T>
+inline constexpr void stream_var(std::ostringstream& oss, std::string_view name,
+                                 T&& value) {
+  oss << YELLOW(name << "=" << std::forward<T>(value)) << " ";
+}
+
+template <typename... Args>
 inline void stream_args(std::ostringstream& oss, std::string& var_str,
                         Args&&... var_args) {
   auto var_names_{parse_var_str(var_str)};
