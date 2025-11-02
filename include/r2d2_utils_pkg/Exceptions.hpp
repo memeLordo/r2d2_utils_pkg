@@ -5,7 +5,7 @@
 #include <iostream>
 #include <queue>
 
-#include "Debug.hpp"
+#include "Logging/Console.hpp"
 
 #define CHECK_FOR_ERROR_RECORD() r2d2_errors::agent::check()
 #define RECORD_ERROR(error) r2d2_errors::agent::record(error)
