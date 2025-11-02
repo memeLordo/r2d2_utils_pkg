@@ -59,10 +59,10 @@ inline std::vector<std::string> parse_names(const std::string& names_str) {
 
 template <typename T, typename... Args>
 inline void debug_print_agrs(std::ostringstream& oss,
-                             const std::string& var_names, Args&&... var_args) {
-  auto names_{parse_names(var_names)};
+                             const std::string& var_str, Args&&... var_args) {
+  auto var_names_{parse_names(var_str)};
   size_t idx{0};
-  (debug_print_single(oss, names_[idx++], std::forward<T>(var_args)), ...);
+  (debug_print_single(oss, var_names_[idx++], std::forward<T>(var_args)), ...);
 }
 
 template <typename LogFunc, typename... Args>
