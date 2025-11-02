@@ -61,7 +61,7 @@ inline auto stream_args(std::string_view label, std::string_view names,
   std::ostringstream oss;
   if (!label.empty()) oss << "[" << MAGENTA(label) << "] : ";
   stream_vars(oss, names, std::forward<Args>(args)...);
-  return oss;
+  return oss.str();
 }
 
 #define STREAM_VARS(label, ...) stream_args(label, #__VA_ARGS__, __VA_ARGS__)
