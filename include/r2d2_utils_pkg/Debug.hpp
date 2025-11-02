@@ -48,19 +48,12 @@ inline void debug_print_single(std::ostringstream& oss, const std::string& name,
     oss << YELLOW(std::forward<T>(value));
 }
 
-inline void debug_print_impl(std::ostringstream& oss,
-                             const std::vector<std::string>& /*names*/,
-                             size_t /*idx*/) {}
-
 template <typename T, typename... Args>
 inline void debug_print_impl(std::ostringstream& oss,
-                             const std::vector<std::string>& names, size_t idx,
-                             T&& value, Args&&... args) {
-  debug_print_single(oss, names[idx], std::forward<T>(value));
-  if (sizeof...(args) > 0) {
-    oss << ", ";
-    debug_print_impl(oss, names, idx++, std::forward<Args>(args)...);
-  }
+                             const std::vector<std::string>& names,
+                             Args&&... args) {
+  size_t idx{0};
+  // (debug_print_single(oss, names[idx++], std::forward<T>(value)), ...);
 }
 
 inline std::vector<std::string> parse_names(std::string& names_str) {
@@ -75,7 +68,7 @@ inline std::vector<std::string> parse_names(std::string& names_str) {
 template <typename... Args>
 inline void debug_print_args(std::ostringstream& oss, std::string names_str,
                              Args&&... args) {
-  debug_print_impl(oss, parse_names(names_str), 0, std::forward<Args>(args)...);
+  debug_print_impl(oss, parse_names(names_str), std::forward<Args>(args)...);
 }
 
 template <typename OutFunc, typename... Args>
