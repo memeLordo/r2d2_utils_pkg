@@ -66,12 +66,12 @@ inline void debug_print_agrs(std::ostringstream& oss,
 }
 
 template <typename LogFunc, typename... Args>
-inline void log_vars(std::string_view func_name, LogFunc outfunc,
+inline void log_vars(std::string_view func_name, LogFunc logfunc,
                      std::string_view names, Args&&... args) {
   std::ostringstream oss;
   if (!func_name.empty()) oss << "[" << MAGENTA(func_name) << "] : ";
   debug_print_args(oss, names, args...);
-  outfunc(oss.str());
+  logfunc(oss.str());
 }
 
 // // Non-void return type version
