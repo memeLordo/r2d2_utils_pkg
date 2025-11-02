@@ -71,9 +71,9 @@ inline void debug_print_args(std::ostringstream& oss, std::string names_str,
   debug_print_impl(oss, parse_names(names_str), std::forward<Args>(args)...);
 }
 
-template <typename OutFunc, typename... Args>
-inline void log_vars(const std::string func_name, OutFunc outfunc,
-                     const std::string names, Args&&... args) {
+template <typename LogFunc, typename... Args>
+inline void log_vars(std::string_view func_name, LogFunc outfunc,
+                     std::string_view names, Args&&... args) {
   std::ostringstream oss;
   if (func_name != "") oss << "[" << MAGENTA(func_name) << "] : ";
   debug_print_args(oss, names, args...);
