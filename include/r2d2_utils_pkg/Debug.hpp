@@ -57,7 +57,7 @@ inline void stream_args(std::ostringstream& oss, std::string& var_str,
                         Args&&... var_args) {
   auto var_names_{parse_var_str(var_str)};
   size_t idx{0};
-  (stream_var(oss, var_names_[idx++], std::forward<T>(var_args)), ...);
+  (stream_var(oss, var_names_[idx++], std::forward<Args>(var_args)), ...);
 }
 
 template <typename LogFunc, typename... Args>
@@ -65,7 +65,7 @@ inline void log_vars(std::string_view func_name, LogFunc logfunc,
                      std::string_view names, Args&&... args) {
   std::ostringstream oss;
   if (!func_name.empty()) oss << "[" << MAGENTA(func_name) << "] : ";
-  stream_args(oss, names, args...);
+  stream_args(oss, names, std::forward<Args>(args)...);
   logfunc(oss.str());
 }
 
@@ -101,8 +101,8 @@ inline void log_vars(std::string_view func_name, LogFunc logfunc,
 //   outfunc(oss.str());
 // }
 
-#define LOG_VAR_(func_name, logfunc, ...) \
-  log_vars(func_name, logfunc, #__VA_ARGS__, __VA_ARGS__)
+#define LOG_VAR_(label, logfunc, ...) \
+  log_vars(label, logfunc, #__VA_ARGS__, __VA_ARGS__)
 #define LOG_VAR(...)                                                   \
   LOG_VAR_(                                                            \
       , [](const std::string& msg) { std::cout << msg << std::endl; }, \
