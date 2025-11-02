@@ -27,7 +27,7 @@
 #define WHITE(x) ANSI_COLOR_WHITE << x << ANSI_COLOR_RESET
 
 [[nodiscard]]
-inline std::vector<std::string> parse_var_str(std::string_view var_str) {
+inline auto parse_var_str(std::string_view var_str) {
   std::string tmp_{var_str};
   std::replace(tmp_.begin(), tmp_.end(), ',', ' ');
   std::istringstream iss(tmp_);
@@ -50,8 +50,8 @@ inline void stream_vars(std::ostringstream& oss, std::string_view var_str,
 }
 
 template <typename... Args>
-inline std::ostringstream stream_args(std::string_view label,
-                                      std::string_view names, Args&&... args) {
+inline auto stream_args(std::string_view label, std::string_view names,
+                        Args&&... args) {
   std::ostringstream oss;
   if (!label.empty()) oss << "[" << MAGENTA(label) << "] : ";
   stream_vars(oss, names, std::forward<Args>(args)...);
