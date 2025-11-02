@@ -31,7 +31,7 @@
 // #define __FUNC_NAME__ prettyName(__PRETTY_FUNCTION__)
 
 // Вспомогательная печать одной пары имя-значение
-inline constexpr bool is_valid_var_name(std::string_view name) {
+inline constexpr bool is_valid_str(std::string_view name) {
   if (name.empty()) return false;
   if (!(std::isalpha(name[0]) || name[0] == '_')) return false;
   return std::all_of(name.begin() + 1, name.end(),
