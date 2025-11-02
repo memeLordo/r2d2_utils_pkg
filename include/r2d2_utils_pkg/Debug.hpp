@@ -38,6 +38,7 @@
 //                      [](char c) { return std::isalnum(c) || c == '_'; });
 // }
 
+[[nodiscard]]
 inline std::vector<std::string> parse_var_str(std::string& var_str) {
   std::replace(var_str.begin(), var_str.end(), ',', ' ');
   std::istringstream iss(var_str);
@@ -60,13 +61,13 @@ inline void stream_vars(std::ostringstream& oss, std::string& var_str,
   (stream_var(oss, var_names_[idx++], std::forward<Args>(var_args)), ...);
 }
 
-template <typename LogFunc, typename... Args>
-inline void log_args(std::string_view label, LogFunc logfunc,
-                     std::string_view names, Args&&... args) {
+template <typename... Args>
+inline std::ostringstream stream_args(std::string_view label,
+                                      std::string& names, Args&&... args) {
   std::ostringstream oss;
   if (!label.empty()) oss << "[" << MAGENTA(label) << "] : ";
-  stream_args(oss, names, std::forward<Args>(args)...);
-  logfunc(oss.str());
+  stream_vars(oss, names, std::forward<Args>(args)...);
+  return oss;
 }
 
 // // Non-void return type version
