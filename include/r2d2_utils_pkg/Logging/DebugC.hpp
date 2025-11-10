@@ -144,6 +144,4 @@ constexpr auto stream_args(const char* label, const char* names,
   return res.data();
 }
 
-#define STREAM_VARS_C(label, ...) stream_args(label, #__VA_ARGS__, __VA_ARGS__)
-
 #endif  // INCLUDE_R2D2_UTILS_PKG_DEBUGC_HPP_
