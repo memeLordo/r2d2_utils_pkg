@@ -76,6 +76,11 @@ template <typename T>
   std::array<char, MAX_VALUE_LEN> result{};
   std::size_t pos{0};
 
+  if (var_name[0] == '"' && var_name[1] == '"') {
+    result[0] = '\0';
+    return result;
+  }
+
   copy_str(ANSI_COLOR_YELLOW, result.data(), pos, MAX_VALUE_LEN);
   copy_str(var_name, result.data(), pos, MAX_VALUE_LEN);
   result[pos++] = '=';
