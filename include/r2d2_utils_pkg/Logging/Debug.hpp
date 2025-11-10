@@ -20,29 +20,33 @@ inline auto parse_var_str(std::string_view var_str) {
 };
 template <typename T>
 inline std::ostringstream& stream_var(std::ostringstream& oss,
+                                      std::string_view color,
                                       std::string_view var_name, T&& var_arg,
                                       std::size_t idx, std::size_t sz) {
   if (var_arg == "") return oss;
-  oss << WHITE(var_name << " = " << std::forward<T>(var_arg));
+  oss << color << var_name << " = " << std::forward<T>(var_arg) << ANSI_RESET;
   if (idx + 1 < sz) oss << ", ";
   return oss;
 };
 template <typename... Args>
 inline std::ostringstream& stream_vars(std::ostringstream& oss,
+                                       std::string_view color,
                                        std::string_view var_str,
                                        Args&&... var_args) {
   auto var_names_{parse_var_str(var_str)};
   std::size_t idx{0};
   constexpr std::size_t sz{sizeof...(var_args)};
-  ((stream_var(oss, var_names_[idx], std::forward<Args>(var_args), idx, sz),
+  ((stream_var(oss, color, var_names_[idx], std::forward<Args>(var_args), idx,
+               sz),
     idx++),
    ...);
   return oss;
 };
 template <typename... Args>
-inline auto stream_args(std::string_view names, Args&&... args) {
+inline auto stream_args(std::string_view color, std::string_view names,
+                        Args&&... args) {
   std::ostringstream oss;
-  stream_vars(oss, names, std::forward<Args>(args)...);
+  stream_vars(oss, color, names, std::forward<Args>(args)...);
   return oss.str();
 };
 
