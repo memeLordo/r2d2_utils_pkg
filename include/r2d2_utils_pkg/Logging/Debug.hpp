@@ -17,8 +17,7 @@ inline auto parse_var_str(std::string_view var_str) {
   std::istringstream iss(tmp_);
   return std::vector<std::string>(std::istream_iterator<std::string>(iss),
                                   std::istream_iterator<std::string>());
-}
-
+};
 template <typename T>
 inline std::ostringstream& stream_var(std::ostringstream& oss,
                                       std::string_view var_name, T&& var_arg,
@@ -27,8 +26,7 @@ inline std::ostringstream& stream_var(std::ostringstream& oss,
   oss << YELLOW(var_name << "=" << std::forward<T>(var_arg));
   if (idx + 1 < sz) oss << ", ";
   return oss;
-}
-
+};
 template <typename... Args>
 inline std::ostringstream& stream_vars(std::ostringstream& oss,
                                        std::string_view var_str,
@@ -40,14 +38,13 @@ inline std::ostringstream& stream_vars(std::ostringstream& oss,
     idx++),
    ...);
   return oss;
-}
-
+};
 template <typename... Args>
 inline auto stream_args(std::string_view label, std::string_view names,
                         Args&&... args) {
   std::ostringstream oss;
   if (!label.empty()) oss << "[" << MAGENTA(label) << "] : ";
   return stream_vars(oss, names, std::forward<Args>(args)...).str();
-}
+};
 
 #endif  // INCLUDE_R2D2_UTILS_PKG_DEBUG_HPP_
