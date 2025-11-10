@@ -1,7 +1,6 @@
 #ifndef INCLUDE_R2D2_UTILS_PKG_DEBUG_HPP_
 #define INCLUDE_R2D2_UTILS_PKG_DEBUG_HPP_
 
-// ANSI color definitions
 #include <algorithm>
 #include <iterator>
 #include <sstream>
