@@ -23,7 +23,7 @@ inline std::ostringstream& stream_var(std::ostringstream& oss,
                                       std::string_view var_name, T&& var_arg,
                                       std::size_t idx, std::size_t sz) {
   if (var_arg == "") return oss;
-  oss << YELLOW(var_name << "=" << std::forward<T>(var_arg));
+  oss << WHITE(var_name << " = " << std::forward<T>(var_arg));
   if (idx + 1 < sz) oss << ", ";
   return oss;
 };
@@ -40,11 +40,10 @@ inline std::ostringstream& stream_vars(std::ostringstream& oss,
   return oss;
 };
 template <typename... Args>
-inline auto stream_args(std::string_view label, std::string_view names,
-                        Args&&... args) {
+inline auto stream_args(std::string_view names, Args&&... args) {
   std::ostringstream oss;
-  if (!label.empty()) oss << "[" << MAGENTA(label) << "] : ";
-  return stream_vars(oss, names, std::forward<Args>(args)...).str();
+  stream_vars(oss, names, std::forward<Args>(args)...);
+  return oss.str();
 };
 
 #endif  // INCLUDE_R2D2_UTILS_PKG_DEBUG_HPP_
