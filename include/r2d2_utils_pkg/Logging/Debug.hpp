@@ -23,6 +23,7 @@ template <typename T>
 inline std::ostringstream& stream_var(std::ostringstream& oss,
                                       std::string_view var_name, T&& var_arg,
                                       std::size_t idx, std::size_t sz) {
+  if (var_name == "\"\"") return oss;
   oss << YELLOW(var_name << "=" << std::forward<T>(var_arg));
   if (idx + 1 < sz) oss << ", ";
   return oss;
