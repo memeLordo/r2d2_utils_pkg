@@ -16,6 +16,7 @@ constexpr void append_chr(char chr, char* dst, std::size_t& pos) {
   if (chr == '\0') return;
   dst[pos++] = chr;
 }
+constexpr void end_str(char* dst, std::size_t& pos) { dst[pos] = '\0'; }
 constexpr void copy_str(const char* src, char* dst, std::size_t& pos,
                         const std::size_t max_len) {
   for (std::size_t i = 0; src[i] && pos < max_len - 1; ++i)
@@ -46,7 +47,7 @@ constexpr std::size_t num_to_str(std::int64_t value, char* buffer,
   std::size_t pos{0};
   for (std::size_t i = idx + 1; i < max_len; ++i)
     append_chr(buffer[i], buffer, pos);
-  buffer[pos] = '\0';
+  end_str(buffer, pos);
   return pos;
 }
 
@@ -68,7 +69,7 @@ template <std::size_t MaxNames>
       std::size_t len = i - start;
       for (std::size_t j = 0; j < len; ++j)
         result[count][j] = var_str[start + j];
-      result[count][len] = '\0';
+      end_str(result[count], len);
       ++count;
     }
     start = i + 1;
@@ -84,7 +85,7 @@ template <typename T>
   std::size_t pos{0};
 
   if (var_name[0] == '"' && var_name[1] == '"') {
-    result[0] = '\0';
+    end_str(result.data(), pos);
     return result;
   }
 
@@ -110,8 +111,7 @@ template <typename T>
     append_chr(',', result.data(), pos);
     append_chr(' ', result.data(), pos);
   }
-  append_chr('\0', result.data(), --pos);
-  result[pos] = '\0';
+  end_str(result.data(), pos);
   return result;
 }
 
@@ -130,7 +130,7 @@ template <typename... Args>
     ++idx;
   };
   (append_var(var_args), ...);
-  result[pos] = '\0';
+  end_str(result.data(), pos);
   return result;
 }
 
@@ -152,9 +152,8 @@ constexpr auto stream_args_c(const char* label, const char* names,
   }
   auto vars{stream_vars(names, args...)};
   concat_buffer(vars, result.data(), pos, MAX_RESULT_LEN);
-  result[pos] = '\0';
-  auto res{result};
-  return res.data();
+  end_str(result.data(), pos);
+  return result;
 }
 
 #endif  // INCLUDE_R2D2_UTILS_PKG_DEBUGC_HPP_
