@@ -59,13 +59,6 @@ template <std::size_t MaxNames>
 
     if (start < i && (i - start) < MAX_NAME_LEN) {
       std::size_t len = i - start;
-
-      // Пропустить пустые строки (заключенные в кавычки "")
-      if (len == 2 && var_str[start] == '"' && var_str[start + 1] == '"') {
-        start = i + 1;
-        continue;
-      }
-
       for (std::size_t j = 0; j < len; ++j)
         result[count][j] = var_str[start + j];
       result[count][len] = '\0';
