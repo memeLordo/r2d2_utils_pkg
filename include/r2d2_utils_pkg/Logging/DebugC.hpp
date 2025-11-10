@@ -122,8 +122,8 @@ template <typename... Args>
 }
 
 template <typename... Args>
-constexpr auto stream_args(const char* label, const char* names,
-                           const Args&... args) {
+constexpr auto stream_args_c(const char* label, const char* names,
+                             const Args&... args) {
   std::array<char, MAX_RESULT_LEN> result{};
   std::size_t pos{0};
 
