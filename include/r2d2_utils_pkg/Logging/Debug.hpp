@@ -49,6 +49,4 @@ inline auto stream_args(std::string_view label, std::string_view names,
   return stream_vars(oss, names, std::forward<Args>(args)...).str();
 }
 
-#define STREAM_VARS(label, ...) stream_args(label, #__VA_ARGS__, __VA_ARGS__)
-
 #endif  // INCLUDE_R2D2_UTILS_PKG_DEBUG_HPP_
