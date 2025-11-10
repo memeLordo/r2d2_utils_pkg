@@ -23,7 +23,7 @@ inline std::ostringstream& stream_var(std::ostringstream& oss,
                                       std::string_view color,
                                       std::string_view var_name, T&& var_arg,
                                       std::size_t idx, std::size_t sz) {
-  if (var_arg == "") return oss;
+  if (var_name == "\"\"") return oss;
   oss << color << var_name << " = " << std::forward<T>(var_arg) << ANSI_RESET;
   if (idx + 1 < sz) oss << ", ";
   return oss;
