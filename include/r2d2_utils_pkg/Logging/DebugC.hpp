@@ -12,14 +12,20 @@ constexpr std::size_t MAX_NAME_LEN{64};
 constexpr std::size_t MAX_VALUE_LEN{256};
 constexpr std::size_t MAX_RESULT_LEN{1024};
 
+constexpr void append_chr(char chr, char* dst, std::size_t& pos) {
+  if (chr == '\0') return;
+  dst[pos++] = chr;
+}
 constexpr void copy_str(const char* src, char* dst, std::size_t& pos,
                         const std::size_t max_len) {
-  for (std::size_t i = 0; src[i] && pos < max_len - 1; ++i) dst[pos++] = src[i];
+  for (std::size_t i = 0; src[i] && pos < max_len - 1; ++i)
+    append_chr(src[i], dst, pos);
 }
 template <std::size_t SrcSize>
 constexpr void concat_buffer(const std::array<char, SrcSize>& src, char* dst,
                              std::size_t& pos, const std::size_t max_len) {
-  for (std::size_t i = 0; src[i] && pos < max_len - 1; ++i) dst[pos++] = src[i];
+  for (std::size_t i = 0; src[i] && pos < max_len - 1; ++i)
+    append_chr(src[i], dst, pos);
 }
 
 [[nodiscard]]
@@ -38,7 +44,8 @@ constexpr std::size_t num_to_str(std::int64_t value, char* buffer,
 
   // Copy to the beginning of the buffer
   std::size_t pos{0};
-  for (std::size_t i = idx + 1; i < max_len; ++i) buffer[pos++] = buffer[i];
+  for (std::size_t i = idx + 1; i < max_len; ++i)
+    append_chr(buffer[i], buffer, pos);
   buffer[pos] = '\0';
   return pos;
 }
@@ -83,7 +90,7 @@ template <typename T>
 
   copy_str(ANSI_COLOR_YELLOW, result.data(), pos, MAX_VALUE_LEN);
   copy_str(var_name, result.data(), pos, MAX_VALUE_LEN);
-  result[pos++] = '=';
+  append_chr('=', result.data(), pos);
 
   if constexpr (std::is_integral_v<T>) {
     char value_buf[MAX_VALUE_LEN]{};
@@ -91,7 +98,7 @@ template <typename T>
                                            value_buf, MAX_VALUE_LEN)};
 
     for (std::size_t i = 0; i < value_len && pos < MAX_VALUE_LEN - 1; ++i)
-      result[pos++] = value_buf[i];
+      append_chr(value_buf[i], result.data(), pos);
   } else if constexpr (std::is_same_v<std::decay_t<T>, const char*>) {
     copy_str(var_arg, result.data(), pos, MAX_VALUE_LEN);
   } else {
@@ -100,9 +107,10 @@ template <typename T>
 
   copy_str(ANSI_COLOR_RESET, result.data(), pos, MAX_VALUE_LEN);
   if (idx + 1 < sz) {
-    result[pos++] = ',';
-    result[pos++] = ' ';
+    append_chr(',', result.data(), pos);
+    append_chr(' ', result.data(), pos);
   }
+  append_chr('\0', result.data(), --pos);
   result[pos] = '\0';
   return result;
 }
@@ -133,14 +141,14 @@ constexpr auto stream_args_c(const char* label, const char* names,
   std::size_t pos{0};
 
   if (label && label[0]) {
-    result[pos++] = '[';
+    append_chr('[', result.data(), pos);
     copy_str(ANSI_COLOR_MAGENTA, result.data(), pos, MAX_RESULT_LEN);
     copy_str(label, result.data(), pos, MAX_RESULT_LEN);
     copy_str(ANSI_COLOR_RESET, result.data(), pos, MAX_RESULT_LEN);
-    result[pos++] = ']';
-    result[pos++] = ' ';
-    result[pos++] = ':';
-    result[pos++] = ' ';
+    append_chr(']', result.data(), pos);
+    append_chr(' ', result.data(), pos);
+    append_chr(':', result.data(), pos);
+    append_chr(' ', result.data(), pos);
   }
   auto vars{stream_vars(names, args...)};
   concat_buffer(vars, result.data(), pos, MAX_RESULT_LEN);
