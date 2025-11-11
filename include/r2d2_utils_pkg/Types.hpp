@@ -18,16 +18,36 @@ namespace r2d2_state {
 enum class WorkMode : uint8_t { NONE = 0, SETUP, AUTO, STOP = 0x80 };
 enum class NozzleType : uint8_t { NONE = 0, EMA, BRUSH };
 
+/**
+ * @brief   Template struct that pairs an enum type with its string key
+ *          representation.
+ *
+ * @tparam  E The enum type
+ *
+ * @details Maintains synchronization between enum values and their string keys.
+ */
 template <typename E>
 struct EnumPair {
   E type{};
   std::string key{};
 
+  /**
+   * @brief   Updates the enum type and synchronizes the key.
+   *
+   * @tparam  T     The value type
+   * @param   value The enum value to set
+   */
   template <typename T>
   void updateType(const T value) {
     type = static_cast<E>(value);
     updateKey();
   };
+
+  /**
+   * @brief   Updates the key string based on the current enum type.
+   *
+   * @details Must be specialized for each enum type.
+   */
   void updateKey();
 };
 
@@ -62,24 +82,59 @@ inline void NozzleTypePair::updateKey() {
 }  // namespace r2d2_state
 
 namespace r2d2_type {
+/**
+ * @brief   Base structure for pipe parameters with diameter and thickness.
+ *
+ * @tparam  T  Result type for radius calculation
+ * @tparam  T1 Type for diameter
+ * @tparam  T2 Type for thickness
+ */
 template <typename T, typename T1, typename T2>
 struct pipebase_t {
   T1 diameter{};
   T2 thickness{};
+
+  /**
+   * @brief   Calculates the pipe radius from diameter and thickness.
+   *
+   * @return  The inner radius (diameter/2 - thickness)
+   */
   [[nodiscard]] constexpr T radius() const {
     return static_cast<T>(diameter) / T{2} - static_cast<T>(thickness);
   };
 };
+
+/**
+ * @brief   Base structure for payload parameters with force value.
+ *
+ * @tparam  T1 Type for force
+ */
 template <typename T1>
 struct payloadbase_t {
   T1 force{};
 };
+
+/**
+ * @brief   Base structure for nozzle parameters with force and radius
+ *          configuration.
+ *
+ * @tparam  T  Result type for radius calculation
+ * @tparam  T1 Type for force parameters
+ */
 template <typename T, typename T1>
 struct nozzlebase_t {
   T1 force_needed{};
   T1 force_tolerance{};
   T r0{};
 };
+
+/**
+ * @brief   Base structure for joint parameters with angular velocity, angle,
+ *          and control word.
+ *
+ * @tparam  T  Type for angular velocity and angle
+ * @tparam  T1 Type for control word
+ */
 template <typename T, typename T1>
 struct jointbase_t {
   T omega{};
@@ -101,10 +156,23 @@ typedef jointbase_t<int16_t, uint16_t> joint16_t;
 }  // namespace r2d2_type::callback
 
 namespace r2d2_type::config {
+/**
+ * @brief   Configuration structure for payload parameters with stiffness
+ *          value.
+ *
+ * @tparam  T Numeric type for stiffness
+ */
 template <typename T>
 struct payload_t {
   T stiffness{1};
 };
+
+/**
+ * @brief   Configuration structure for joint parameters with physical
+ *          dimensions, control parameters, and polynomial coefficients.
+ *
+ * @tparam  T Numeric type for all parameters
+ */
 template <typename T>
 struct joint_t {
   T length{};
@@ -113,14 +181,33 @@ struct joint_t {
   T angle_tolerance{};
   std::vector<T> coeffs{};
 };
+
+/**
+ * @brief   Configuration structure for pipe parameters.
+ *
+ * @tparam  T Numeric type for diameter and thickness
+ */
 template <typename T>
 struct pipe_t {
   T diameter{};
   T thickness{};
+
+  /**
+   * @brief   Calculates the pipe radius from diameter and thickness.
+   *
+   * @return  The inner radius (diameter/2 - thickness)
+   */
   [[nodiscard]] constexpr T radius() const {
     return diameter / T{2} - thickness;
   };
 };
+
+/**
+ * @brief   Type alias for nozzle configuration using the same numeric type
+ *          for all parameters.
+ *
+ * @tparam  T Numeric type for force and radius parameters
+ */
 template <typename T>
 using nozzle_t = nozzlebase_t<T, T>;
 }  // namespace r2d2_type::config

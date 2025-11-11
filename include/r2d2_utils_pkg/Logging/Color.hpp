@@ -28,10 +28,15 @@ constexpr std::array<ColorType, 4> COLOR_PRESETS{
      {{ANSI_CYAN, ANSI_CYAN}, ANSI_CYAN, ANSI_CYAN, ANSI_CYAN},
      {{ANSI_YELLOW, ANSI_RED}, ANSI_MAGENTA, ANSI_BLUE, ANSI_YELLOW}}};
 
-// Factory function
+/**
+ * @brief   Factory function to get a color preset configuration.
+ *
+ * @param   preset The color preset to retrieve
+ * @return         The ColorType configuration for the specified preset
+ */
 constexpr ColorType paint(ColorPreset preset) noexcept {
   return COLOR_PRESETS[static_cast<std::size_t>(preset)];
-}
+};
 
 }  // namespace r2d2_console
 
