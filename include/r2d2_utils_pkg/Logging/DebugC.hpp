@@ -20,17 +20,6 @@ constexpr void push_chr(char chr, char* dst, std::size_t& pos) {
   dst[pos--] = chr;
 }
 constexpr void end_str(char* dst, std::size_t& pos) { dst[pos] = '\0'; }
-constexpr void copy_str(const char* src, char* dst, std::size_t& pos,
-                        const std::size_t max_len) {
-  for (std::size_t i = 0; src[i] && pos < max_len - 1; ++i)
-    append_chr(src[i], dst, pos);
-}
-template <std::size_t SrcSize>
-constexpr void concat_buff(const std::array<char, SrcSize>& src, char* dst,
-                           std::size_t& pos, const std::size_t max_len) {
-  for (std::size_t i = 0; src[i] && pos < max_len - 1; ++i)
-    append_chr(src[i], dst, pos);
-}
 
 [[nodiscard]]
 constexpr std::size_t num_to_str(std::int64_t value, char* buffer,
@@ -52,6 +41,18 @@ constexpr std::size_t num_to_str(std::int64_t value, char* buffer,
     append_chr(buffer[i], buffer, pos);
   end_str(buffer, pos);
   return pos;
+}
+
+constexpr void copy_str(const char* src, char* dst, std::size_t& pos) {
+  for (std::size_t i = 0; src[i] && pos < MAX_VALUE_LEN - 1; ++i)
+    append_chr(src[i], dst, pos);
+}
+template <typename T>
+template <std::size_t SrcSize>
+constexpr void concat_buff(const std::array<char, SrcSize>& src, char* dst,
+                           std::size_t& pos) {
+  for (std::size_t i = 0; src[i] && pos < MAX_VALUE_LEN - 1; ++i)
+    append_chr(src[i], dst, pos);
 }
 
 template <std::size_t MaxNames>
