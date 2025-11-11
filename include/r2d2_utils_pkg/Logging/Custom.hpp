@@ -20,7 +20,7 @@ std::string paint_value(std::string color, T value) {
 #define ROS_DEBUG_FUNC(output, ...)                                     \
   ROS_DEBUG("%s(%s) : %s", __func__,                                    \
             stream_args(ANSI_WHITE, #__VA_ARGS__, __VA_ARGS__).c_str(), \
-            paint_value(ANSI_MAGENTA, output).c_str())
+            paint_value(ANSI_WHITE, output).c_str())
 
 #define ROS_DEBUG_VARS_C(...) \
   ROS_DEBUG("%s", stream_args_c(ANSI_WHITE, #__VA_ARGS__, __VA_ARGS__).data())
@@ -30,7 +30,7 @@ std::string paint_value(std::string color, T value) {
 #define ROS_DEBUG_FUNC_C(output, ...)                                    \
   ROS_DEBUG("%s(%s) : %s", __func__,                                     \
             stream_args_c(ANSI_WHITE, #__VA_ARGS__, __VA_ARGS__).data(), \
-            paint_value(ANSI_MAGENTA, output).c_str())
+            paint_value(ANSI_WHITE, output).c_str())
 
 #define ROS_DEBUG_NAMED_VARS(name, ...) \
   ROS_DEBUG("[%s] %s", name.c_str(),    \
@@ -41,7 +41,7 @@ std::string paint_value(std::string color, T value) {
 #define ROS_DEBUG_NAMED_FUNC(name, output, ...)                         \
   ROS_DEBUG("[%s] %s(%s) : %s", name.c_str(), __func__,                 \
             stream_args(ANSI_WHITE, #__VA_ARGS__, __VA_ARGS__).c_str(), \
-            paint_value(ANSI_MAGENTA, output).c_str())
+            paint_value(ANSI_WHITE, output).c_str())
 
 #define ROS_DEBUG_NAMED_VARS_C(name, ...) \
   ROS_DEBUG("[%s] %s", name.c_str(),      \
@@ -52,7 +52,7 @@ std::string paint_value(std::string color, T value) {
 #define ROS_DEBUG_NAMED_FUNC_C(name, output, ...)                        \
   ROS_DEBUG("[%s] %s(%s) : %s", name.c_str(), __func__,                  \
             stream_args_c(ANSI_WHITE, #__VA_ARGS__, __VA_ARGS__).data(), \
-            paint_value(ANSI_MAGENTA, output).c_str())
+            paint_value(ANSI_WHITE, output).c_str())
 
 #define ROS_DEBUG_COLORED_VARS(color, ...) \
   ROS_DEBUG("%s", stream_args(color, #__VA_ARGS__, __VA_ARGS__).c_str())
@@ -62,7 +62,7 @@ std::string paint_value(std::string color, T value) {
 #define ROS_DEBUG_COLORED_FUNC(color, output, ...)                 \
   ROS_DEBUG("%s(%s) : %s", __func__,                               \
             stream_args(color, #__VA_ARGS__, __VA_ARGS__).c_str(), \
-            paint_value(ANSI_MAGENTA, output).c_str())
+            paint_value(ANSI_WHITE, output).c_str())
 
 #define ROS_DEBUG_COLORED_VARS_C(color, ...) \
   ROS_DEBUG("%s", stream_args_c(color, #__VA_ARGS__, __VA_ARGS__).data())
@@ -72,7 +72,7 @@ std::string paint_value(std::string color, T value) {
 #define ROS_DEBUG_COLORED_FUNC_C(color, output, ...)                \
   ROS_DEBUG("%s(%s) : %s", __func__,                                \
             stream_args_c(color, #__VA_ARGS__, __VA_ARGS__).data(), \
-            paint_value(ANSI_MAGENTA, output).c_str())
+            paint_value(ANSI_WHITE, output).c_str())
 
 #define ROS_DEBUG_NAMED_COLORED_VARS(name, color, ...) \
   ROS_DEBUG("[%s] %s", name.c_str(),                   \
@@ -83,7 +83,7 @@ std::string paint_value(std::string color, T value) {
 #define ROS_DEBUG_NAMED_COLORED_FUNC(name, color, output, ...)     \
   ROS_DEBUG("[%s] %s(%s) : %s", name.c_str(), __func__,            \
             stream_args(color, #__VA_ARGS__, __VA_ARGS__).c_str(), \
-            paint_value(ANSI_MAGENTA, output).c_str())
+            paint_value(ANSI_WHITE, output).c_str())
 
 #define ROS_DEBUG_NAMED_COLORED_VARS_C(name, color, ...) \
   ROS_DEBUG("[%s] %s", name.c_str(),                     \
@@ -94,6 +94,6 @@ std::string paint_value(std::string color, T value) {
 #define ROS_DEBUG_NAMED_COLORED_FUNC_C(name, color, output, ...)    \
   ROS_DEBUG("[%s] %s(%s) : %s", name.c_str(), __func__,             \
             stream_args_c(color, #__VA_ARGS__, __VA_ARGS__).data(), \
-            paint_value(ANSI_MAGENTA, output).c_str())
+            paint_value(ANSI_WHITE, output).c_str())
 
 #endif  // INCLUDE_R2D2_UTILS_PKG_CUSTOM_HPP_
