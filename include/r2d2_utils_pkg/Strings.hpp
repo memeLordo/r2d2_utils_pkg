@@ -8,14 +8,16 @@
 
 namespace r2d2_string {
 /**
- * @brief Transforms a substring of a string view using a transformation
- * function.
- * @tparam TransformFunc The transformation function type
- * @param sv The string view to transform
- * @param func The transformation function to apply to each character
- * @param from Start index (default: 0)
- * @param to End index (default: npos, meaning end of string)
- * @return A new string with the transformed substring
+ * @brief   Transforms a substring of a string view using a transformation
+ *          function.
+ *
+ * @tparam  TransformFunc The transformation function type
+ * @param   sv   The string view to transform
+ * @param   func The transformation function to apply to each character
+ * @param   from Start index (default: 0)
+ * @param   to   End index (default: npos, meaning end of string)
+ * @return       A new string with the transformed substring
+ *
  * @details Creates a copy of the string and applies the transformation function
  *          to characters in the specified range.
  */
@@ -36,23 +38,26 @@ inline std::string transform_string(std::string_view sv, TransformFunc func,
 };
 
 /**
- * @brief Converts a substring to uppercase.
- * @param sv The string view to convert
- * @param from Start index (default: 0)
- * @param to End index (default: npos, meaning end of string)
- * @return A new string with the specified substring in uppercase
+ * @brief   Converts a substring to uppercase.
+ *
+ * @param   sv   The string view to convert
+ * @param   from Start index (default: 0)
+ * @param   to   End index (default: npos, meaning end of string)
+ * @return       A new string with the specified substring in uppercase
  */
 [[nodiscard]]
 inline std::string upper(std::string_view sv, size_t from = 0,
                          size_t to = std::string_view::npos) {
   return transform_string(sv, ::toupper, from, to);
 };
+
 /**
- * @brief Converts a substring to lowercase.
- * @param sv The string view to convert
- * @param from Start index (default: 0)
- * @param to End index (default: npos, meaning end of string)
- * @return A new string with the specified substring in lowercase
+ * @brief   Converts a substring to lowercase.
+ *
+ * @param   sv   The string view to convert
+ * @param   from Start index (default: 0)
+ * @param   to   End index (default: npos, meaning end of string)
+ * @return       A new string with the specified substring in lowercase
  */
 [[nodiscard]]
 inline std::string lower(std::string_view sv, size_t from = 0,

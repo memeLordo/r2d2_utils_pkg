@@ -5,12 +5,14 @@
 
 namespace horner {
 /**
- * @brief Evaluates a polynomial using Horner's method.
- * @tparam Vector The vector/container type for coefficients
- * @tparam T Numeric type
- * @param coeffs Vector of polynomial coefficients (highest degree first)
- * @param x The value to evaluate the polynomial at
- * @return The result of the polynomial evaluation
+ * @brief   Evaluates a polynomial using Horner's method.
+ *
+ * @tparam  Vector The vector/container type for coefficients
+ * @tparam  T      Numeric type
+ * @param   coeffs Vector of polynomial coefficients (highest degree first)
+ * @param   x      The value to evaluate the polynomial at
+ * @return         The result of the polynomial evaluation
+ *
  * @details Uses Horner's method for efficient polynomial evaluation.
  *          Returns 0 if the coefficients vector is empty.
  */
