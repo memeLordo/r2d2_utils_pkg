@@ -94,7 +94,7 @@ template <typename T>
 
   copy_str(ANSI_COLOR_YELLOW, result.data(), pos, MAX_VALUE_LEN);
   copy_str(var_name, result.data(), pos, MAX_VALUE_LEN);
-  append_chr('=', result.data(), pos);
+  copy_str(" = ", result.data(), pos, MAX_VALUE_LEN);
 
   if constexpr (std::is_integral_v<T>) {
     char value_buf[MAX_VALUE_LEN]{};
@@ -149,9 +149,7 @@ constexpr auto stream_args_c(const char* label, const char* names,
     copy_str(label, result.data(), pos, MAX_RESULT_LEN);
     copy_str(ANSI_COLOR_RESET, result.data(), pos, MAX_RESULT_LEN);
     append_chr(']', result.data(), pos);
-    append_chr(' ', result.data(), pos);
-    append_chr(':', result.data(), pos);
-    append_chr(' ', result.data(), pos);
+    copy_str(" : ", result.data(), pos, MAX_RESULT_LEN);
   }
   auto vars{stream_vars(names, args...)};
   concat_buff(vars, result.data(), pos, MAX_RESULT_LEN);
