@@ -26,8 +26,8 @@ constexpr void copy_str(const char* src, char* dst, std::size_t& pos,
     append_chr(src[i], dst, pos);
 }
 template <std::size_t SrcSize>
-constexpr void concat_buffer(const std::array<char, SrcSize>& src, char* dst,
-                             std::size_t& pos, const std::size_t max_len) {
+constexpr void concat_buff(const std::array<char, SrcSize>& src, char* dst,
+                           std::size_t& pos, const std::size_t max_len) {
   for (std::size_t i = 0; src[i] && pos < max_len - 1; ++i)
     append_chr(src[i], dst, pos);
 }
@@ -128,8 +128,8 @@ template <typename... Args>
   std::size_t pos{0}, idx{0};
 
   auto append_var = [&](const auto& arg) {
-    concat_buffer(stream_var(var_names[idx], arg, idx, sz), result.data(), pos,
-                  MAX_RESULT_LEN);
+    concat_buff(stream_var(var_names[idx], arg, idx, sz), result.data(), pos,
+                MAX_RESULT_LEN);
     ++idx;
   };
   (append_var(var_args), ...);
@@ -154,7 +154,7 @@ constexpr auto stream_args_c(const char* label, const char* names,
     append_chr(' ', result.data(), pos);
   }
   auto vars{stream_vars(names, args...)};
-  concat_buffer(vars, result.data(), pos, MAX_RESULT_LEN);
+  concat_buff(vars, result.data(), pos, MAX_RESULT_LEN);
   end_str(result.data(), pos);
   return result;
 }
