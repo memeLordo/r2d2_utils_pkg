@@ -24,7 +24,8 @@ constexpr void append_chr(char chr, char* dst, std::size_t& pos) {
   dst[pos++] = chr;
 }
 /**
- * @brief Pushes a character backwards into a buffer (for reverse string building).
+ * @brief Pushes a character backwards into a buffer (for reverse string
+ * building).
  * @param chr The character to push
  * @param dst The destination buffer
  * @param pos Current position in the buffer (decremented after push)
@@ -44,7 +45,8 @@ constexpr void end_str(char* dst, std::size_t& pos) { dst[pos] = '\0'; }
  * @param value The integer value to convert
  * @param buffer The buffer to write the string to
  * @return The length of the resulting string (excluding null terminator)
- * @details Handles negative numbers and builds the string in reverse before copying forward.
+ * @details Handles negative numbers and builds the string in reverse before
+ * copying forward.
  */
 [[nodiscard]]
 constexpr std::size_t num_to_str(std::int64_t value, char* buffer) {
@@ -84,7 +86,8 @@ constexpr void copy_str(const char* src, char* dst, std::size_t& pos) {
  * @param var_arg The argument value to convert
  * @param dst The destination buffer
  * @param pos Current position in the destination buffer (updated after copy)
- * @details Converts numeric/enum types to string, handles other types as "<unknown>".
+ * @details Converts numeric/enum types to string, handles other types as
+ * "<unknown>".
  */
 template <typename T>
 constexpr void copy_arg(T&& var_arg, char* dst, std::size_t& pos) {
@@ -110,12 +113,14 @@ constexpr void concat_buff(const std::array<char, SrcSize>& src, char* dst,
 }
 
 /**
- * @brief Parses a variable string into an array of variable names at compile time.
+ * @brief Parses a variable string into an array of variable names at compile
+ * time.
  * @tparam MaxNames Maximum number of variable names to parse
  * @param var_str Comma-separated null-terminated string of variable names
  * @return Array of null-terminated variable name strings
- * @details Splits the input string by commas and spaces, extracting individual variable names.
- *          Returns empty strings for empty variable names (indicated by "").
+ * @details Splits the input string by commas and spaces, extracting individual
+ * variable names. Returns empty strings for empty variable names (indicated by
+ * "").
  */
 template <std::size_t MaxNames>
 [[nodiscard]]
@@ -154,8 +159,8 @@ constexpr std::array<char[MAX_NAME_LEN], MaxNames> parse_var_str(
  * @param idx Current index in the variable list
  * @param sz Total number of variables
  * @return Array containing the formatted "name = value" string
- * @details Formats as "color name = value ANSI_GREEN" with comma separator if not last.
- *          Returns empty string if var_name is "".
+ * @details Formats as "color name = value ANSI_GREEN" with comma separator if
+ * not last. Returns empty string if var_name is "".
  */
 template <typename T>
 [[nodiscard]] constexpr std::array<char, MAX_VALUE_LEN> stream_var(
@@ -197,7 +202,8 @@ template <typename T>
  * @param var_str Comma-separated null-terminated string of variable names
  * @param var_args The variable values
  * @return Array containing the formatted string with all "name = value" pairs
- * @details Concatenates formatted strings for all variables with proper separators.
+ * @details Concatenates formatted strings for all variables with proper
+ * separators.
  */
 template <typename... Args>
 [[nodiscard]] constexpr std::array<char, MAX_RESULT_LEN> stream_vars(
@@ -219,14 +225,16 @@ template <typename... Args>
 }
 
 /**
- * @brief Main compile-time function to create a formatted string with variable names and values.
+ * @brief Main compile-time function to create a formatted string with variable
+ * names and values.
  * @tparam Args Variadic variable types
  * @param color ANSI color code for variable names
  * @param names Comma-separated null-terminated string of variable names
  * @param args The variable values
  * @return Array containing the formatted string with "name = value" pairs
- * @details This is the compile-time (constexpr) version of stream_args, used by ROS_DEBUG macros
- *          that require compile-time evaluation. Formats all variables with their names and values.
+ * @details This is the compile-time (constexpr) version of stream_args, used by
+ * ROS_DEBUG macros that require compile-time evaluation. Formats all variables
+ * with their names and values.
  */
 template <typename... Args>
 constexpr auto stream_args_c(const char* color, const char* names,

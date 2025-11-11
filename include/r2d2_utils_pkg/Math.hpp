@@ -91,7 +91,8 @@ template <typename T>
 
 namespace r2d2_process {
 /**
- * @brief Template struct for wrapping/unwrapping values using a conversion ratio.
+ * @brief Template struct for wrapping/unwrapping values using a conversion
+ * ratio.
  * @tparam ratio Reference to the conversion ratio constant
  * @details Provides static methods to convert between raw and scaled values.
  */

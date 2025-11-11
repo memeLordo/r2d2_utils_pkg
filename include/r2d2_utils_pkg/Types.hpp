@@ -19,7 +19,8 @@ enum class WorkMode : uint8_t { NONE = 0, SETUP, AUTO, STOP = 0x80 };
 enum class NozzleType : uint8_t { NONE = 0, EMA, BRUSH };
 
 /**
- * @brief Template struct that pairs an enum type with its string key representation.
+ * @brief Template struct that pairs an enum type with its string key
+ * representation.
  * @tparam E The enum type
  * @details Maintains synchronization between enum values and their string keys.
  */

@@ -13,7 +13,8 @@
  * @brief Parses a variable string into a vector of variable names.
  * @param var_str Comma-separated string of variable names
  * @return Vector of variable name strings
- * @details Replaces commas with spaces and splits the string into individual names.
+ * @details Replaces commas with spaces and splits the string into individual
+ * names.
  */
 [[nodiscard]]
 inline auto parse_var_str(std::string_view var_str) {

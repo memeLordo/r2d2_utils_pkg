@@ -19,7 +19,8 @@ std::string getFilePath(std::string_view fileName) noexcept;
 
 /**
  * @brief Base class for JSON configuration loading.
- * @tparam isSafe If true, errors are recorded instead of thrown (default: false)
+ * @tparam isSafe If true, errors are recorded instead of thrown (default:
+ * false)
  * @details Loads a JSON file and provides access to its parameters.
  */
 template <bool isSafe = false>
@@ -55,7 +56,8 @@ class IJsonConfig {
 };
 
 /**
- * @brief Specialized constructor for safe mode that records errors instead of throwing.
+ * @brief Specialized constructor for safe mode that records errors instead of
+ * throwing.
  * @param fileName The name of the JSON configuration file
  * @details Errors are recorded in the error queue instead of being thrown.
  */
@@ -70,7 +72,8 @@ inline IJsonConfig<true>::IJsonConfig(std::string_view fileName) {
   }
 };
 /**
- * @brief Specialized getParam for safe mode that records errors instead of throwing.
+ * @brief Specialized getParam for safe mode that records errors instead of
+ * throwing.
  * @tparam T The type to retrieve the parameter as
  * @param key The parameter key
  * @return The parameter value, or default-constructed T if key is not found
@@ -93,7 +96,8 @@ inline T IJsonConfig<true>::getParam(std::string_view key) const {
  * @brief Extended JSON configuration class that maps keys to typed objects.
  * @tparam Type The configuration type template
  * @tparam T Numeric type for the configuration values (default: double)
- * @details Loads JSON and deserializes entries into a map of configuration objects.
+ * @details Loads JSON and deserializes entries into a map of configuration
+ * objects.
  */
 template <template <typename> class Type, typename T = double>
 class IJsonConfigMap : public IJsonConfig<> {

@@ -14,15 +14,18 @@
 
 namespace r2d2_errors {
 /**
- * @brief Base class for error types that concatenate multiple strings into a message.
+ * @brief Base class for error types that concatenate multiple strings into a
+ * message.
  * @tparam Error The underlying error type to inherit from
- * @details Provides functionality to create error messages by concatenating multiple string arguments.
+ * @details Provides functionality to create error messages by concatenating
+ * multiple string arguments.
  */
 template <typename Error>
 class BaseError : public Error {
  protected:
   /**
-   * @brief Constructs a BaseError with a concatenated message from multiple strings.
+   * @brief Constructs a BaseError with a concatenated message from multiple
+   * strings.
    * @tparam String Variadic string types
    * @param str Variadic list of strings to concatenate into the error message
    */

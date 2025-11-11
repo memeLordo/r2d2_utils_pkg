@@ -19,13 +19,15 @@ class NamedHandlerVector {
 
  public:
   /**
-   * @brief Constructs a NamedHandlerVector with handlers for the specified names.
+   * @brief Constructs a NamedHandlerVector with handlers for the specified
+   * names.
    * @tparam Node The node handle type
    * @tparam String Variadic string types for handler names
    * @param node Pointer to the node handle for constructing handlers
    * @param names Variadic list of handler names
-   * @details Creates handlers for each name and builds an index map for name-based access.
-   *          Requires at least one name and all names must be convertible to string.
+   * @details Creates handlers for each name and builds an index map for
+   * name-based access. Requires at least one name and all names must be
+   * convertible to string.
    */
   template <typename Node, typename... String>
   NamedHandlerVector(Node* node, String&&... names) {
@@ -60,7 +62,8 @@ class NamedHandlerVector {
    * @tparam Args Variadic argument types
    * @param func The member function pointer to call
    * @param args Arguments to pass to the member function
-   * @details Invokes the specified member function on all handlers with the given arguments.
+   * @details Invokes the specified member function on all handlers with the
+   * given arguments.
    */
   template <typename Func, typename... Args>
   void call_each(Func func, Args&&... args) {
@@ -74,7 +77,8 @@ class NamedHandlerVector {
    * @param func The member function pointer to call
    * @param args Arguments to pass to the member function
    * @return A vector containing the results from each handler
-   * @details Invokes the specified member function on all handlers and collects return values.
+   * @details Invokes the specified member function on all handlers and collects
+   * return values.
    */
   template <typename Func, typename... Args>
   auto get_each(Func func, Args&&... args) const {

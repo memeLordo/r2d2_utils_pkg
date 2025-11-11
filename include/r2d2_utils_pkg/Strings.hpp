@@ -8,7 +8,8 @@
 
 namespace r2d2_string {
 /**
- * @brief Transforms a substring of a string view using a transformation function.
+ * @brief Transforms a substring of a string view using a transformation
+ * function.
  * @tparam TransformFunc The transformation function type
  * @param sv The string view to transform
  * @param func The transformation function to apply to each character
