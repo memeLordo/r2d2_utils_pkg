@@ -48,6 +48,13 @@ constexpr void copy_str(const char* src, char* dst, std::size_t& pos) {
     append_chr(src[i], dst, pos);
 }
 template <typename T>
+constexpr void copy_arg(T&& var_arg, char* dst, std::size_t& pos) {
+  char value_buf[MAX_VALUE_LEN]{};
+  const std::size_t value_len{
+      num_to_str(static_cast<std::int64_t>(var_arg), value_buf)};
+  for (std::size_t i = 0; i < value_len && pos < MAX_VALUE_LEN - 1; ++i)
+    append_chr(value_buf[i], dst, pos);
+}
 template <std::size_t SrcSize>
 constexpr void concat_buff(const std::array<char, SrcSize>& src, char* dst,
                            std::size_t& pos) {
