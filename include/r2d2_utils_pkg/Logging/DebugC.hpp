@@ -96,7 +96,7 @@ template <typename T>
   copy_str(var_name, result.data(), pos, MAX_VALUE_LEN);
   copy_str(" = ", result.data(), pos, MAX_VALUE_LEN);
 
-  if constexpr (std::is_integral_v<T>) {
+  if constexpr (std::is_arithmetic_v<T>) {
     char value_buf[MAX_VALUE_LEN]{};
     const std::size_t value_len{num_to_str(static_cast<std::int64_t>(var_arg),
                                            value_buf, MAX_VALUE_LEN)};
