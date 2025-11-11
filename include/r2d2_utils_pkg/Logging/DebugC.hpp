@@ -16,6 +16,9 @@ constexpr void append_chr(char chr, char* dst, std::size_t& pos) {
   if (chr == '\0') return;
   dst[pos++] = chr;
 }
+constexpr void push_chr(char chr, char* dst, std::size_t& pos) {
+  dst[pos--] = chr;
+}
 constexpr void end_str(char* dst, std::size_t& pos) { dst[pos] = '\0'; }
 constexpr void copy_str(const char* src, char* dst, std::size_t& pos,
                         const std::size_t max_len) {
@@ -37,11 +40,11 @@ constexpr std::size_t num_to_str(std::int64_t value, char* buffer,
 
   std::size_t idx{max_len - 1};
   do {
-    buffer[idx--] = '0' + (value % 10);
+    push_chr('0' + (value % 10), buffer, idx);
     value /= 10;
   } while (value != 0 && idx > 0);
 
-  if (negative && idx > 0) buffer[idx--] = '-';
+  if (negative && idx > 0) push_chr('-', buffer, idx);
 
   // Copy to the beginning of the buffer
   std::size_t pos{0};
